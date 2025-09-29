@@ -45,12 +45,6 @@
       var state = {
         WELCOME1: 0,
         WELCOME2: 1,
-        CHOOSEGAME: 2,
-        MATCHINTRO1: 3,
-        MATCHINTRO2: 4,
-        MATCHINTRO3: 5,
-        MATCHLEVEL: 6,
-        PLAYMATCH: 7,
         END: 8,
         SORTINTRO1: 9,
         SORTINTRO2: 10,
@@ -91,17 +85,7 @@
       var increasePlayButtonSize = true;
       var increaseLevelButtonSize = true;
 
-      var tileRowCount;
-      var tileColumnCount;
-      var tileSize;
-      var tilePadding;
-      var tileOffsetTop;
-      var tileOffsetLeft;
-
-      var tiles;
-
       var backgroundMusic = new Audio();
-      var matchingMusic = new Audio();
 
       var sortingMusic = new Audio();
 
@@ -115,20 +99,12 @@
       var mainIntroImg = new Image();
       var welcome1Img = new Image();
       var welcome2Img = new Image();
-      var chooseGameImg = new Image();
-      var matchingIntro1Img = new Image();
-      var matchingIntro2Img = new Image();
-      var matchingIntro3Img = new Image();
-      var matchingLevelSelectImg = new Image();
-      var endScreenMatchingImg = new Image();
       var sortingIntro1Img = new Image();
       var sortingIntro2Img = new Image();
       var sortingLevelSelectImg = new Image();
       var endScreenSortingImg = new Image();
       var pauseScreenImg = new Image();
 
-      var matchingButtonImg = new Image();
-      var sortingButtonImg = new Image();
       var muteImg = new Image();
       var unmuteImg = new Image();
       var pauseButtonImg = new Image();
@@ -210,8 +186,6 @@
       var aluminumFoilGSImg = new Image();
       var coffeeLidGSImg = new Image();
 
-      var matchingCardImg = new Image();
-      var cardFrontImg = new Image();
       var sortingBackgroundImg = new Image();
       var paperBackImg = new Image();
       var paperFrontImg = new Image();
@@ -223,7 +197,7 @@
       var landfillFrontImg = new Image();
 
       var numberLoaded = 0;
-      var numberOfAssets = 104;
+      var numberOfAssets = 94;
 
       function loadAssets() {
         var finishedLoading = function () {
@@ -234,20 +208,12 @@
         mainIntroImg.onload = finishedLoading;
         welcome1Img.onload = finishedLoading;
         welcome2Img.onload = finishedLoading;
-        chooseGameImg.onload = finishedLoading;
-        matchingIntro1Img.onload = finishedLoading;
-        matchingIntro2Img.onload = finishedLoading;
-        matchingIntro3Img.onload = finishedLoading;
-        matchingLevelSelectImg.onload = finishedLoading;
-        endScreenMatchingImg.onload = finishedLoading;
         sortingIntro1Img.onload = finishedLoading;
         sortingIntro2Img.onload = finishedLoading;
         sortingLevelSelectImg.onload = finishedLoading;
         endScreenSortingImg.onload = finishedLoading;
         pauseScreenImg.onload = finishedLoading;
 
-        matchingButtonImg.onload = finishedLoading;
-        sortingButtonImg.onload = finishedLoading;
         muteImg.onload = finishedLoading;
         unmuteImg.onload = finishedLoading;
         pauseButtonImg.onload = finishedLoading;
@@ -329,8 +295,6 @@
         aluminumFoilGSImg.onload = finishedLoading;
         coffeeLidGSImg.onload = finishedLoading;
 
-        matchingCardImg.onload = finishedLoading;
-        cardFrontImg.onload = finishedLoading;
         sortingBackgroundImg.onload = finishedLoading;
         paperBackImg.onload = finishedLoading;
         paperFrontImg.onload = finishedLoading;
@@ -344,20 +308,12 @@
         mainIntroImg.src = "Images/Screens/mainIntro.png";
         welcome1Img.src = "Images/Screens/welcome1.png";
         welcome2Img.src = "Images/Screens/welcome2.png";
-        chooseGameImg.src = "Images/Screens/chooseGame.png";
-        matchingIntro1Img.src = "Images/Screens/matchingIntro1.png";
-        matchingIntro2Img.src = "Images/Screens/matchingIntro2.png";
-        matchingIntro3Img.src = "Images/Screens/matchingIntro3.png";
-        matchingLevelSelectImg.src = "Images/Screens/chooseLevelMatching.png";
-        endScreenMatchingImg.src = "Images/Screens/endScreenMatching.png";
         sortingIntro1Img.src = "Images/Screens/sortingIntro1.png";
         sortingIntro2Img.src = "Images/Screens/sortingIntro2.png";
         sortingLevelSelectImg.src = "Images/Screens/chooseLevelSorting.png";
         endScreenSortingImg.src = "Images/Screens/endScreenSorting.png";
         pauseScreenImg.src = "Images/Screens/pauseScreen.png";
 
-        matchingButtonImg.src = "Images/Buttons/matchingButton.png";
-        sortingButtonImg.src = "Images/Buttons/sortingButton.png";
         muteImg.src = "Images/Buttons/muteButton.png";
         unmuteImg.src = "Images/Buttons/unmuteButton.png";
         pauseButtonImg.src = "Images/Buttons/pauseButton.png";
@@ -439,8 +395,6 @@
         aluminumFoilGSImg.src = "Images/Grayscale/aluminumFoilGS.png";
         coffeeLidGSImg.src = "Images/Grayscale/coffeeLidGS.png";
 
-        matchingCardImg.src = "Images/Other/matchingCard.png";
-        cardFrontImg.src = "Images/Other/cardFront.png";
         sortingBackgroundImg.src = "Images/Other/sortingBackground.png";
         paperBackImg.src = "Images/Other/paperBack.png";
         paperFrontImg.src = "Images/Other/paperFront.png";
@@ -454,13 +408,9 @@
         //Audio
         backgroundMusic.loop = true;
         backgroundMusic.src = "Sound/bgMusic.mp3";
-        matchingMusic.loop = true;
-        matchingMusic.src = "Sound/matchingMusic.mp3";
         sortingMusic.loop = true;
         sortingMusic.src = "Sound/sortingMusic.mp3";
         buttonSound.src = "Sound/buttonPop.mp3";
-        tileFlipSound.src = "Sound/swish.mp3";
-        tileMatchSound.src = "Sound/ding.mp3";
       }
 
       var dragImg;
@@ -499,16 +449,6 @@
       var organicsColumnEnd = organicsColumnStart + binWidth;
       var landfillColumnEnd = landfillColumnStart + binWidth;
 
-      var displayMatchInfo;
-      var matchInfoImage;
-      var matchInfoString1;
-      var matchInfoString2;
-
-      var imageIndex;
-      var numberTilesFlipped;
-      var firstFlippedTileIndex;
-      var secondFlippedTileIndex;
-
       var timerCircleRadius = 60;
       var startAngle = -(Math.PI / 2);
       var endAngle = 0;
@@ -522,22 +462,6 @@
 
       var startingGarbageCount;
       var itemsRemaining;
-
-      var matchingButton = new RectangularButton(
-        canvas.width / 4 - chooseButtonSize / 2,
-        canvas.height / 4 - chooseButtonSize / 2,
-        chooseButtonSize,
-        chooseButtonSize,
-        matchingButtonImg
-      );
-
-      var sortingButton = new RectangularButton(
-        canvas.width / 2 + canvas.width / 4 - chooseButtonSize / 2,
-        canvas.height / 4 - chooseButtonSize / 2,
-        chooseButtonSize,
-        chooseButtonSize,
-        sortingButtonImg
-      );
 
       var playButton = new CircularButton(
         canvas.width / 2 - originalPlayButtonSize - originalPlayButtonSize / 2,
@@ -598,158 +522,6 @@
         soundButtonSize,
         muteImg
       );
-
-      var images = [];
-
-      function setMatchLevelBoard() {
-        tiles = [];
-        displayMatchInfo = false;
-        score = 0;
-        imageIndex = 0;
-        numberTilesFlipped = 0;
-        firstFlippedTileIndex = 0;
-        secondFlippedTileIndex = 0;
-        gameTitle = "matching";
-
-        if (level == 1) {
-          timerTime = 60000;
-          tileRowCount = 3;
-          tileColumnCount = 6;
-          tileSize = 120;
-          tilePadding = 15;
-          tileOffsetTop = 120;
-          tileOffsetLeft = 75;
-          images = [
-            bananaMatchImg,
-            bananaMatchImg,
-            bottleMatchImg,
-            bottleMatchImg,
-            chipsMatchImg,
-            chipsMatchImg,
-            grassMatchImg,
-            grassMatchImg,
-            newsPaperMatchImg,
-            newsPaperMatchImg,
-            paperCupMatchImg,
-            paperCupMatchImg,
-            paperTowelsMatchImg,
-            paperTowelsMatchImg,
-            plasticBagMatchImg,
-            plasticBagMatchImg,
-            strawAndLidMatchImg,
-            strawAndLidMatchImg,
-          ];
-          images.sort(function () {
-            return 0.5 - Math.random();
-          });
-        }
-
-        if (level == 2) {
-          timerTime = 75000;
-          tileRowCount = 3;
-          tileColumnCount = 8;
-          tileSize = 95;
-          tilePadding = 15;
-          tileOffsetTop = 150;
-          tileOffsetLeft = 50;
-          images = [
-            appleMatchImg,
-            appleMatchImg,
-            paperTowelsMatchImg,
-            paperTowelsMatchImg,
-            milkCartonMatchImg,
-            milkCartonMatchImg,
-            paperPlatesMatchImg,
-            paperPlatesMatchImg,
-            glassJarMatchImg,
-            glassJarMatchImg,
-            takeOutBoxMatchImg,
-            takeOutBoxMatchImg,
-            bonesMatchImg,
-            bonesMatchImg,
-            petWasteMatchImg,
-            petWasteMatchImg,
-            coffeeLidMatchImg,
-            coffeeLidMatchImg,
-            mailMatchImg,
-            mailMatchImg,
-            paperCupMatchImg,
-            paperCupMatchImg,
-            newsPaperMatchImg,
-            newsPaperMatchImg,
-          ];
-          images.sort(function () {
-            return 0.5 - Math.random();
-          });
-        }
-
-        if (level == 3) {
-          timerTime = 90000;
-          tileRowCount = 4;
-          tileColumnCount = 8;
-          tileSize = 90;
-          tilePadding = 15;
-          tileOffsetTop = 105;
-          tileOffsetLeft = 70;
-          images = [
-            appleMatchImg,
-            appleMatchImg,
-            paperTowelsMatchImg,
-            paperTowelsMatchImg,
-            milkCartonMatchImg,
-            milkCartonMatchImg,
-            paperPlatesMatchImg,
-            paperPlatesMatchImg,
-            glassJarMatchImg,
-            glassJarMatchImg,
-            sodaCanMatchImg,
-            sodaCanMatchImg,
-            paperBagMatchImg,
-            paperBagMatchImg,
-            petWasteMatchImg,
-            petWasteMatchImg,
-            coffeeLidMatchImg,
-            coffeeLidMatchImg,
-            mailMatchImg,
-            mailMatchImg,
-            paperCupMatchImg,
-            paperCupMatchImg,
-            newsPaperMatchImg,
-            newsPaperMatchImg,
-            plasticBagMatchImg,
-            plasticBagMatchImg,
-            bonesMatchImg,
-            bonesMatchImg,
-            brokenPlateMatchImg,
-            brokenPlateMatchImg,
-            takeOutBoxMatchImg,
-            takeOutBoxMatchImg,
-          ];
-          images.sort(function () {
-            return 0.5 - Math.random();
-          });
-        }
-
-        for (i = 0; i < tileColumnCount; i++) {
-          for (j = 0; j < tileRowCount; j++) {
-            tiles.push(
-              new Tile(
-                i * (tileSize + tilePadding) + tileOffsetLeft,
-                j * (tileSize + tilePadding) + tileOffsetTop,
-                tileSize,
-                images[imageIndex]
-              )
-            );
-
-            imageIndex++;
-          }
-        }
-
-        for (i = 0; i < tiles.length; i++) {
-          tiles[i].flipped = false;
-          tiles[i].matched = false;
-        }
-      }
 
       function setSortLevelBoard() {
         if (level == 1) {
@@ -1353,14 +1125,6 @@
         var x = e.pageX - canvas.offsetLeft;
         var y = e.pageY - canvas.offsetTop;
 
-        if (currentState == state.PLAYMATCH) {
-          if (timer.isMatchDelayed()) {
-            timer.endMatchDelay();
-            timer.update();
-            numberTilesFlipped = 0;
-          }
-        }
-
         if (currentState == state.MAININTRO) {
           if (playButton.clicked(x, y)) {
             if (!muted) {
@@ -1368,65 +1132,32 @@
               buttonSound.load();
               buttonSound.play();
             }
-
             currentState = state.WELCOME1;
-
             playButton.size = originalPlayButtonSize;
             currentPlayButtonSize = originalPlayButtonSize;
             increasePlayButtonSize = true;
           }
+          toggleAudio(x, y); 
 
-          toggleAudio(x, y);
         } else if (currentState == state.WELCOME1) {
           if (playButton.clicked(x, y)) {
             if (!muted) {
               buttonSound.load();
               buttonSound.play();
             }
-
             currentState = state.WELCOME2;
-
             playButton.size = originalPlayButtonSize;
             currentPlayButtonSize = originalPlayButtonSize;
             increasePlayButtonSize = true;
           }
-
           toggleAudio(x, y);
+
         } else if (currentState == state.WELCOME2) {
           if (playButton.clicked(x, y)) {
             if (!muted) {
               buttonSound.load();
               buttonSound.play();
             }
-
-            currentState = state.CHOOSEGAME;
-          }
-
-          toggleAudio(x, y);
-        } else if (currentState == state.CHOOSEGAME) {
-          if (matchingButton.clicked(x, y)) {
-            if (!muted) {
-              buttonSound.load();
-              buttonSound.play();
-            }
-
-            currentState = state.MATCHINTRO1;
-
-            playButton.x =
-              canvas.width / 2 + canvas.width / 4 - originalPlayButtonSize / 2;
-            playButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize / 2;
-            playButton.size = originalPlayButtonSize;
-            currentPlayButtonSize = originalPlayButtonSize;
-            increasePlayButtonSize = true;
-          } else if (sortingButton.clicked(x, y)) {
-            if (!muted) {
-              buttonSound.load();
-              buttonSound.play();
-            }
-
             currentState = state.SORTINTRO1;
 
             playButton.x = canvas.width / 2 - originalPlayButtonSize / 2;
@@ -1435,434 +1166,8 @@
             currentPlayButtonSize = originalPlayButtonSize;
             increasePlayButtonSize = true;
           }
-
           toggleAudio(x, y);
-        } else if (currentState == state.MATCHINTRO1) {
-          if (playButton.clicked(x, y)) {
-            if (!muted) {
-              buttonSound.load();
-              buttonSound.play();
-            }
-
-            currentState = state.MATCHINTRO2;
-
-            playButton.x = canvas.width / 2 - originalPlayButtonSize / 2;
-            playButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize -
-              originalPlayButtonSize / 8;
-            playButton.size = originalPlayButtonSize;
-            currentPlayButtonSize = originalPlayButtonSize;
-            increasePlayButtonSize = true;
-          }
-
-          toggleAudio(x, y);
-        } else if (currentState == state.MATCHINTRO2) {
-          if (playButton.clicked(x, y)) {
-            if (!muted) {
-              buttonSound.load();
-              buttonSound.play();
-            }
-
-            currentState = state.MATCHINTRO3;
-
-            playButton.x =
-              canvas.width / 2 - canvas.width / 4 - originalPlayButtonSize / 2;
-            playButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize / 2;
-            playButton.size = originalPlayButtonSize;
-            currentPlayButtonSize = originalPlayButtonSize;
-            increasePlayButtonSize = true;
-          }
-
-          toggleAudio(x, y);
-        } else if (currentState == state.MATCHINTRO3) {
-          if (playButton.clicked(x, y)) {
-            if (!muted) {
-              buttonSound.load();
-              buttonSound.play();
-            }
-
-            currentPlayButtonSize = originalPlayButtonSize;
-            increasePlayButtonSize = true;
-
-            currentState = state.MATCHLEVEL;
-
-            level1Button.x =
-              canvas.width / 4 - levelButtonWidth / 2 - levelButtonWidth;
-            level1Button.y =
-              canvas.height / 2 + canvas.height / 4 - levelButtonHeight / 2;
-
-            level2Button.x = canvas.width / 4;
-            level2Button.y =
-              canvas.height / 2 + canvas.height / 4 - levelButtonHeight / 2;
-
-            level3Button.x =
-              canvas.width / 4 + levelButtonWidth / 2 + levelButtonWidth;
-            level3Button.y =
-              canvas.height / 2 + canvas.height / 4 - levelButtonHeight / 2;
-          }
-
-          toggleAudio(x, y);
-        } else if (currentState == state.MATCHLEVEL) {
-          toggleAudio(x, y);
-
-          if (
-            level1Button.clicked(x, y) ||
-            level2Button.clicked(x, y) ||
-            level3Button.clicked(x, y)
-          ) {
-            if (!muted) {
-              buttonSound.load();
-              buttonSound.play();
-            }
-
-            if (level1Button.clicked(x, y)) {
-              level = 1;
-            }
-
-            if (level2Button.clicked(x, y)) {
-              level = 2;
-            }
-
-            if (level3Button.clicked(x, y)) {
-              level = 3;
-            }
-
-            setMatchLevelBoard();
-
-            currentState = state.PLAYMATCH;
-
-            pauseButton.image = pauseButtonImg;
-            pauseButton.x = canvas.width - originalPlayButtonSize * 2;
-            pauseButton.y = canvas.height - originalPlayButtonSize - 15;
-
-            homeButton.x =
-              canvas.width / 2 -
-              originalPlayButtonSize * 2 -
-              originalPlayButtonSize / 4;
-            homeButton.y = canvas.height / 2 + originalPlayButtonSize / 2;
-            homeButton.size = originalPlayButtonSize;
-
-            restartButton.x =
-              canvas.width / 2 -
-              originalPlayButtonSize +
-              originalPlayButtonSize / 8;
-            restartButton.y =
-              canvas.height / 2 -
-              originalPlayButtonSize / 2 -
-              originalPlayButtonSize / 8;
-            restartButton.size = originalPlayButtonSize;
-
-            muteButton.x =
-              canvas.width / 2 -
-              originalPlayButtonSize +
-              originalPlayButtonSize / 8;
-            muteButton.y = canvas.height / 2 + originalPlayButtonSize / 2;
-            muteButton.size = originalPlayButtonSize;
-
-            if (!muted) {
-              backgroundMusic.pause();
-              matchingMusic.currentTime = 0;
-              matchingMusic.play();
-            }
-
-            timer.setTimerTime(timerTime);
-            timer.start();
-          }
-        } else if (currentState == state.PLAYMATCH) {
-          if (score != (tiles.length * 50) / 2) {
-            toggleAudio(x, y);
-          }
-
-          for (i = 0; i < tiles.length; i++) {
-            if (
-              tiles[i].clicked(x, y) &&
-              !timer.isPaused() &&
-              !tiles[i].flipped &&
-              !tiles[i].matched &&
-              numberTilesFlipped < 2 &&
-              !timer.isMatchDelayed() &&
-              !timer.isEndDelayed()
-            ) {
-              tiles[i].flipped = true;
-
-              if (numberTilesFlipped == 1) {
-                secondFlippedTileIndex = i;
-              } else {
-                if (!muted) {
-                  tileFlipSound.load();
-                  tileFlipSound.play();
-                }
-
-                firstFlippedTileIndex = i;
-              }
-
-              numberTilesFlipped++;
-
-              if (numberTilesFlipped == 2) {
-                if (
-                  tiles[firstFlippedTileIndex].image ==
-                  tiles[secondFlippedTileIndex].image
-                ) {
-                  if (!muted) {
-                    tileMatchSound.load();
-                    tileMatchSound.play();
-                  }
-
-                  tiles[firstFlippedTileIndex].matched = true;
-                  tiles[secondFlippedTileIndex].matched = true;
-
-                  switch (tiles[firstFlippedTileIndex].image) {
-                    case bananaMatchImg:
-                      matchInfoImage = bananaMatchImg;
-                      matchInfoString1 =
-                        "Banana peels can be composted with other organics.";
-                      matchInfoString2 = "";
-                      break;
-                    case bottleMatchImg:
-                      matchInfoImage = bottleMatchImg;
-                      matchInfoString1 =
-                        "Plastic bottles can be recycled with other plastics.";
-                      matchInfoString2 = "";
-                      break;
-                    case chipsMatchImg:
-                      matchInfoImage = chipsMatchImg;
-                      matchInfoString1 =
-                        "Chip bags should be placed in the trash.";
-                      matchInfoString2 = "";
-                      break;
-                    case grassMatchImg:
-                      matchInfoImage = grassMatchImg;
-                      matchInfoString1 =
-                        "Grass clippings can be composted with other organics.";
-                      matchInfoString2 = "";
-                      break;
-                    case newsPaperMatchImg:
-                      matchInfoImage = newsPaperMatchImg;
-                      matchInfoString1 =
-                        "Newspaper can be recycled with other papers.";
-                      matchInfoString2 = "";
-                      break;
-                    case paperCupMatchImg:
-                      matchInfoImage = paperCupMatchImg;
-                      matchInfoString1 =
-                        "Coffee cups can be composted with other organics.";
-                      matchInfoString2 = "";
-                      break;
-                    case paperTowelsMatchImg:
-                      matchInfoImage = paperTowelsMatchImg;
-                      matchInfoString1 =
-                        "Paper towels can be composted with other organics.";
-                      matchInfoString2 = "";
-                      break;
-                    case plasticBagMatchImg:
-                      matchInfoImage = plasticBagMatchImg;
-                      matchInfoString1 =
-                        "Plastic bags should be placed in the trash.";
-                      matchInfoString2 = "";
-                      break;
-                    case strawAndLidMatchImg:
-                      matchInfoImage = strawAndLidMatchImg;
-                      matchInfoString1 =
-                        "Plastic straws and disposable cup lids can be";
-                      matchInfoString2 = "recycled with other plastics.";
-                      break;
-                    case coffeeLidMatchImg:
-                      matchInfoImage = coffeeLidMatchImg;
-                      matchInfoString1 =
-                        "Disposable plastic coffee cup lids can be recycled";
-                      matchInfoString2 = "with other plastics.";
-                      break;
-                    case appleMatchImg:
-                      matchInfoImage = appleMatchImg;
-                      matchInfoString1 =
-                        "Apple cores can be composted with other organics.";
-                      matchInfoString2 = "";
-                      break;
-                    case glassJarMatchImg:
-                      matchInfoImage = glassJarMatchImg;
-                      matchInfoString1 = "Glass food jars can be recycled.";
-                      matchInfoString2 = "";
-                      break;
-                    case mailMatchImg:
-                      matchInfoImage = mailMatchImg;
-                      matchInfoString1 =
-                        "Mail can be recycled with other papers.";
-                      matchInfoString2 = "";
-                      break;
-                    case petWasteMatchImg:
-                      matchInfoImage = petWasteMatchImg;
-                      matchInfoString1 =
-                        "Pet waste should be placed in the trash.";
-                      matchInfoString2 = "";
-                      break;
-                    case paperPlatesMatchImg:
-                      matchInfoImage = paperPlatesMatchImg;
-                      matchInfoString1 =
-                        "Paper plates can be composted with other organics.";
-                      matchInfoString2 = "";
-                      break;
-                    case takeOutBoxMatchImg:
-                      matchInfoImage = takeOutBoxMatchImg;
-                      matchInfoString1 =
-                        "Chopsticks and take-out food boxes can be composted";
-                      matchInfoString2 = "with other organics.";
-                      break;
-                    case bonesMatchImg:
-                      matchInfoImage = bonesMatchImg;
-                      matchInfoString1 =
-                        "Meat and bones can be composted with other organics.";
-                      matchInfoString2 = "";
-                      break;
-                    case milkCartonMatchImg:
-                      matchInfoImage = milkCartonMatchImg;
-                      matchInfoString1 =
-                        "Milk cartons can be composted with other organics.";
-                      matchInfoString2 = "";
-                      break;
-                    case paperBagMatchImg:
-                      matchInfoImage = paperBagMatchImg;
-                      matchInfoString1 =
-                        "Paper bags can be recycled with other papers.";
-                      matchInfoString2 = "";
-                      break;
-                    case sodaCanMatchImg:
-                      matchInfoImage = sodaCanMatchImg;
-                      matchInfoString1 =
-                        "Aluminum cans may be recycled with other metals.";
-                      matchInfoString2 = "";
-                      break;
-                    case brokenPlateMatchImg:
-                      matchInfoImage = brokenPlateMatchImg;
-                      matchInfoString1 =
-                        "Broken dishes and glassware should be placed in";
-                      matchInfoString2 = "the trash.";
-                      break;
-                    default:
-                    //do nothing
-                  }
-
-                  displayMatchInfo = true;
-
-                  score += 50;
-
-                  if (!muted) {
-                    tileMatchSound.load();
-                    tileMatchSound.play();
-                  }
-
-                  if (score != (tiles.length * 50) / 2) {
-                    timer.matchDelay();
-                  } else {
-                    timer.endDelay();
-                  }
-                } else {
-                  if (!muted) {
-                    tileFlipSound.load();
-                    tileFlipSound.play();
-                  }
-
-                  timer.missDelay();
-                }
-              }
-            }
-          }
-
-          if (pauseButton.clicked(x, y) && score != (tiles.length * 50) / 2) {
-            if (
-              !timer.isPaused() &&
-              !timer.isMatchDelayed() &&
-              !timer.isEndDelayed()
-            ) {
-              if (!muted) {
-                buttonSound.load();
-                buttonSound.play();
-              }
-
-              timer.pause();
-              pauseButton.image = playButtonImg;
-              pauseButton.x =
-                canvas.width / 2 -
-                originalPlayButtonSize * 2 -
-                originalPlayButtonSize / 4;
-              pauseButton.y =
-                canvas.height / 2 -
-                originalPlayButtonSize / 2 -
-                originalPlayButtonSize / 8;
-            } else if (!timer.isMatchDelayed() && !timer.isEndDelayed()) {
-              if (!muted) {
-                buttonSound.load();
-                buttonSound.play();
-              }
-
-              timer.unpause();
-              pauseButton.image = pauseButtonImg;
-              pauseButton.x = canvas.width - originalPlayButtonSize * 2;
-              pauseButton.y = canvas.height - originalPlayButtonSize - 15;
-            }
-          }
-
-          if (restartButton.clicked(x, y) && timer.isPaused()) {
-            if (!muted) {
-              buttonSound.load();
-              buttonSound.play();
-
-              matchingMusic.pause();
-              backgroundMusic.currentTime = 0;
-              backgroundMusic.play();
-            }
-
-            currentState = state.MATCHLEVEL;
-
-            homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
-            homeButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize / 2;
-
-            restartButton.x = canvas.width / 4 - originalPlayButtonSize / 2;
-            restartButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize / 2;
-
-            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            muteButton.y = soundButtonSize / 8;
-            muteButton.size = soundButtonSize;
-          }
-
-          if (homeButton.clicked(x, y) && timer.isPaused()) {
-            if (!muted) {
-              buttonSound.load();
-              buttonSound.play();
-
-              matchingMusic.pause();
-              backgroundMusic.currentTime = 0;
-              backgroundMusic.play();
-            }
-
-            currentState = state.CHOOSEGAME;
-
-            homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
-            homeButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize / 2;
-
-            restartButton.x = canvas.width / 4 - originalPlayButtonSize / 2;
-            restartButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize / 2;
-
-            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            muteButton.y = soundButtonSize / 8;
-            muteButton.size = soundButtonSize;
-          }
+          
         } else if (currentState == state.SORTINTRO1) {
           if (playButton.clicked(x, y)) {
             if (!muted) {
@@ -1910,14 +1215,17 @@
             }
 
             if (level1Button.clicked(x, y)) {
+              console.log('level 1');
               level = 1;
             }
 
             if (level2Button.clicked(x, y)) {
+              console.log('level 2');
               level = 2;
             }
 
             if (level3Button.clicked(x, y)) {
+              console.log('level 3');
               level = 3;
             }
 
@@ -2040,7 +1348,7 @@
               backgroundMusic.play();
             }
 
-            currentState = state.CHOOSEGAME;
+            currentState = state.SORTINTRO1;
 
             homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
             homeButton.y =
@@ -2064,12 +1372,7 @@
               buttonSound.load();
               buttonSound.play();
             }
-
-            if (gameTitle == "matching") {
-              currentState = state.MATCHLEVEL;
-            } else {
-              currentState = state.SORTLEVEL;
-            }
+            currentState = state.SORTLEVEL;
           }
 
           if (homeButton.clicked(x, y)) {
@@ -2078,7 +1381,7 @@
               buttonSound.play();
             }
 
-            currentState = state.CHOOSEGAME;
+            currentState = state.SORTINTRO1;
           }
 
           toggleAudio(x, y);
@@ -2340,9 +1643,7 @@
 
       function toggleAudio(x, y) {
         if (muteButton.clicked(x, y) && !muted) {
-          if (currentState == state.PLAYMATCH) {
-            matchingMusic.pause();
-          } else if (currentState == state.PLAYSORT) {
+          if (currentState == state.PLAYSORT) {
             sortingMusic.pause();
           } else {
             backgroundMusic.pause();
@@ -2351,9 +1652,7 @@
           muted = true;
           muteButton.image = unmuteImg;
         } else if (muteButton.clicked(x, y) && muted) {
-          if (currentState == state.PLAYMATCH) {
-            matchingMusic.play();
-          } else if (currentState == state.PLAYSORT) {
+          if (currentState == state.PLAYSORT) {
             sortingMusic.play();
           } else {
             backgroundMusic.play();
@@ -2370,17 +1669,6 @@
         ctx.fillStyle = "#FCE21E";
         ctx.fill();
         ctx.closePath();
-      }
-
-      function drawMatchInfo() {
-        ctx.drawImage(matchInfoImage, 90, canvas.height - 115, 100, 100);
-
-        ctx.font = "20px Comic Sans MS";
-        ctx.fillStyle = "#000000";
-        ctx.textAlign = "left";
-        ctx.textBaseline = "middle";
-        ctx.fillText(matchInfoString1, 210, canvas.height - 75);
-        ctx.fillText(matchInfoString2, 210, canvas.height - 50);
       }
 
       function drawScore() {
@@ -2515,123 +1803,6 @@
         );
       }
 
-      function drawChooseGameScreen() {
-        ctx.drawImage(chooseGameImg, 0, 0, canvas.width, canvas.height);
-        ctx.drawImage(
-          matchingButton.image,
-          matchingButton.x,
-          matchingButton.y,
-          matchingButton.width,
-          matchingButton.height
-        );
-        ctx.drawImage(
-          sortingButton.image,
-          sortingButton.x,
-          sortingButton.y,
-          sortingButton.width,
-          sortingButton.height
-        );
-        ctx.drawImage(
-          muteButton.image,
-          muteButton.x,
-          muteButton.y,
-          muteButton.size,
-          muteButton.size
-        );
-      }
-
-      function drawMatchingIntro1() {
-        ctx.drawImage(matchingIntro1Img, 0, 0, canvas.width, canvas.height);
-        ctx.drawImage(
-          playButton.image,
-          playButton.x,
-          playButton.y,
-          playButton.size,
-          playButton.size
-        );
-        ctx.drawImage(
-          muteButton.image,
-          muteButton.x,
-          muteButton.y,
-          muteButton.size,
-          muteButton.size
-        );
-      }
-
-      function drawMatchingIntro2() {
-        ctx.drawImage(matchingIntro2Img, 0, 0, canvas.width, canvas.height);
-        ctx.drawImage(
-          playButton.image,
-          playButton.x,
-          playButton.y,
-          playButton.size,
-          playButton.size
-        );
-        ctx.drawImage(
-          muteButton.image,
-          muteButton.x,
-          muteButton.y,
-          muteButton.size,
-          muteButton.size
-        );
-      }
-
-      function drawMatchingIntro3() {
-        ctx.drawImage(matchingIntro3Img, 0, 0, canvas.width, canvas.height);
-        ctx.drawImage(
-          playButton.image,
-          playButton.x,
-          playButton.y,
-          playButton.size,
-          playButton.size
-        );
-        ctx.drawImage(
-          muteButton.image,
-          muteButton.x,
-          muteButton.y,
-          muteButton.size,
-          muteButton.size
-        );
-      }
-
-      function drawMatchingChooseLevelScreen() {
-        ctx.drawImage(
-          matchingLevelSelectImg,
-          0,
-          0,
-          canvas.width,
-          canvas.height
-        );
-        ctx.drawImage(
-          level1Button.image,
-          level1Button.x,
-          level1Button.y,
-          level1Button.width,
-          level1Button.height
-        );
-        ctx.drawImage(
-          level2Button.image,
-          level2Button.x,
-          level2Button.y,
-          level2Button.width,
-          level2Button.height
-        );
-        ctx.drawImage(
-          level3Button.image,
-          level3Button.x,
-          level3Button.y,
-          level3Button.width,
-          level3Button.height
-        );
-        ctx.drawImage(
-          muteButton.image,
-          muteButton.x,
-          muteButton.y,
-          muteButton.size,
-          muteButton.size
-        );
-      }
-
       function drawSortingChooseLevelScreen() {
         ctx.drawImage(sortingLevelSelectImg, 0, 0, canvas.width, canvas.height);
         ctx.drawImage(
@@ -2701,35 +1872,20 @@
       }
 
       function drawEndGameScreen() {
-        if (gameTitle == "matching") {
-          ctx.drawImage(
-            endScreenMatchingImg,
-            0,
-            0,
-            canvas.width,
-            canvas.height
-          );
-          ctx.font = "bold 48px Comic Sans MS";
-          ctx.fillStyle = "#201A91";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.fillText(score, canvas.width / 2 - 150, canvas.height / 2);
-        } else {
-          ctx.drawImage(endScreenSortingImg, 0, 0, canvas.width, canvas.height);
-          ctx.font = "bold 28px Comic Sans MS";
-          ctx.fillStyle = "#201A91";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.fillText(
-            recyclingSorted +
-              landfillSorted +
-              " of " +
-              startingGarbageCount +
-              " items sorted correctly",
-            canvas.width / 2 - 150,
-            canvas.height / 2
-          );
-        }
+        ctx.drawImage(endScreenSortingImg, 0, 0, canvas.width, canvas.height);
+        ctx.font = "bold 28px Comic Sans MS";
+        ctx.fillStyle = "#201A91";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(
+           recyclingSorted +
+             landfillSorted +
+             " of " +
+             startingGarbageCount +
+             " items sorted correctly",
+           canvas.width / 2 - 150,
+           canvas.height / 2
+        );
 
         ctx.drawImage(
           restartButton.image,
@@ -3032,46 +2188,6 @@
         ctx.closePath();
       }
 
-      function changeChooseButtonSize() {
-        if (chooseButtonSize < 250 && increaseChooseButtonSize) {
-          chooseButtonSize += 1;
-
-          matchingButton.x -= 0.5;
-          matchingButton.y -= 0.5;
-
-          matchingButton.width = chooseButtonSize;
-          matchingButton.height = chooseButtonSize;
-
-          sortingButton.x -= 0.5;
-          sortingButton.y -= 0.5;
-
-          sortingButton.width = chooseButtonSize;
-          sortingButton.height = chooseButtonSize;
-
-          if (chooseButtonSize >= 250) {
-            increaseChooseButtonSize = false;
-          }
-        } else {
-          chooseButtonSize -= 1;
-
-          matchingButton.x += 0.5;
-          matchingButton.y += 0.5;
-
-          matchingButton.width = chooseButtonSize;
-          matchingButton.height = chooseButtonSize;
-
-          sortingButton.x += 0.5;
-          sortingButton.y += 0.5;
-
-          sortingButton.width = chooseButtonSize;
-          sortingButton.height = chooseButtonSize;
-
-          if (chooseButtonSize <= 200) {
-            increaseChooseButtonSize = true;
-          }
-        }
-      }
-
       function changePlayButtonSize() {
         if (currentPlayButtonSize < 125 && increasePlayButtonSize) {
           currentPlayButtonSize += 0.5;
@@ -3209,36 +2325,6 @@
           drawWelcome2Screen();
 
           changePlayButtonSize();
-        } else if (currentState == state.CHOOSEGAME) {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-          drawChooseGameScreen();
-
-          changeChooseButtonSize();
-        } else if (currentState == state.MATCHINTRO1) {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-          drawMatchingIntro1();
-
-          changePlayButtonSize();
-        } else if (currentState == state.MATCHINTRO2) {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-          drawMatchingIntro2();
-
-          changePlayButtonSize();
-        } else if (currentState == state.MATCHINTRO3) {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-          drawMatchingIntro3();
-
-          changePlayButtonSize();
-        } else if (currentState == state.MATCHLEVEL) {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-          drawMatchingChooseLevelScreen();
-
-          changeLevelButtonSize();
         } else if (currentState == state.SORTINTRO1) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -3257,116 +2343,6 @@
           drawSortingChooseLevelScreen();
 
           changeLevelButtonSize();
-        } else if (currentState == state.PLAYMATCH) {
-          timer.update();
-
-          if (
-            !timer.isPaused() &&
-            !timer.isMatchDelayed() &&
-            !timer.isEndDelayed()
-          ) {
-            percent = timer.getRunTime() / timer.getTimerTime();
-
-            timerBarWidth = percent * canvas.width;
-
-            timeElapsed = Number(timer.getRunTime() / 1000).toFixed(2);
-          }
-
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-          drawGameBoard();
-          drawScore();
-          drawEmptyBar();
-          drawTimerBar();
-          //drawTime();
-          drawTiles();
-
-          if (displayMatchInfo) {
-            drawMatchInfo();
-          }
-
-          if (timer.isPaused()) {
-            muteButton.x =
-              canvas.width / 2 -
-              originalPlayButtonSize +
-              originalPlayButtonSize / 8;
-            muteButton.y = canvas.height / 2 + originalPlayButtonSize / 2;
-            muteButton.size = originalPlayButtonSize;
-            drawPauseScreen();
-          } else {
-            drawPauseButton();
-            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            muteButton.y = soundButtonSize / 2;
-            muteButton.size = soundButtonSize;
-            drawMuteButton();
-          }
-
-          if (
-            score == (tiles.length * 50) / 2 &&
-            !timer.isMatchDelayed() &&
-            !timer.isEndDelayed()
-          ) {
-            if (!muted) {
-              matchingMusic.pause();
-              backgroundMusic.currentTime = 0;
-              backgroundMusic.play();
-            }
-
-            currentState = state.END;
-
-            homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
-            homeButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize / 2;
-
-            restartButton.x = canvas.width / 4 - originalPlayButtonSize / 2;
-            restartButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize / 2;
-
-            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            muteButton.y = soundButtonSize / 8;
-            muteButton.size = soundButtonSize;
-          }
-
-          if (numberTilesFlipped == 2 && !timer.isMissDelayed()) {
-            numberTilesFlipped = 0;
-            tiles[firstFlippedTileIndex].flipped = false;
-            tiles[secondFlippedTileIndex].flipped = false;
-          }
-
-          if (
-            timer.getRunTime() > timer.getTimerTime() &&
-            !timer.isPaused() &&
-            !timer.isMatchDelayed() &&
-            !timer.isEndDelayed()
-          ) {
-            if (!muted) {
-              matchingMusic.pause();
-              backgroundMusic.currentTime = 0;
-              backgroundMusic.play();
-            }
-
-            currentState = state.END;
-
-            homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
-            homeButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize / 2;
-
-            restartButton.x = canvas.width / 4 - originalPlayButtonSize / 2;
-            restartButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize / 2;
-
-            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            muteButton.y = soundButtonSize / 8;
-            muteButton.size = soundButtonSize;
-          }
         } else if (currentState == state.PLAYSORT) {
           timer.update();
 
