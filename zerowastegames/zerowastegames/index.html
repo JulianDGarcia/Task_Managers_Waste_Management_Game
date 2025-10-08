@@ -15,7 +15,7 @@
       }
       <div id="selectedItem"
         style="text-align:center; font-size:24px; margin-top:10px; color:#333;"
-        Selected: None
+        Selected: None 
       </div>
     </style>
   </head>
@@ -52,6 +52,8 @@
       var state = {
         WELCOME1: 0,
         WELCOME2: 1,
+        TUT_INTRO: 2,
+        TUTORIAL: 3,
         END: 8,
         SORTINTRO1: 9,
         SORTINTRO2: 10,
@@ -106,6 +108,8 @@
       var mainIntroImg = new Image();
       var welcome1Img = new Image();
       var welcome2Img = new Image();
+      var tutorial_introImg = new Image();
+      var tutorialImg = new Image();
       var sortingIntro1Img = new Image();
       var sortingIntro2Img = new Image();
       var sortingLevelSelectImg = new Image();
@@ -215,6 +219,8 @@
         mainIntroImg.onload = finishedLoading;
         welcome1Img.onload = finishedLoading;
         welcome2Img.onload = finishedLoading;
+        tutorial_introImg.onload = finishedLoading;
+        tutorialImg.onload = finishedLoading;
         sortingIntro1Img.onload = finishedLoading;
         sortingIntro2Img.onload = finishedLoading;
         sortingLevelSelectImg.onload = finishedLoading;
@@ -315,21 +321,23 @@
         mainIntroImg.src = "Images/Screens/mainIntro.png";
         welcome1Img.src = "Images/Screens/welcome1.png";
         welcome2Img.src = "Images/Screens/welcome2.png";
+        tutorial_introImg.src = "Images/Screens/tutorial_intro.png";
+        tutorialImg.src = "Images/Screens/tutorial.png";
         sortingIntro1Img.src = "Images/Screens/sortingIntro1.png";
         sortingIntro2Img.src = "Images/Screens/sortingIntro2.png";
         sortingLevelSelectImg.src = "Images/Screens/chooseLevelSorting.png";
         endScreenSortingImg.src = "Images/Screens/endScreenSorting.png";
         pauseScreenImg.src = "Images/Screens/pauseScreen.png";
 
-        muteImg.src = "Images/Buttons/muteButton.png";
-        unmuteImg.src = "Images/Buttons/unmuteButton.png";
-        pauseButtonImg.src = "Images/Buttons/pauseButton.png";
-        playButtonImg.src = "Images/Buttons/playButton.png";
+        muteImg.src = "Images/Buttons/muteButton_Updated.png";
+        unmuteImg.src = "Images/Buttons/unmuteButton_Updated.png";
+        pauseButtonImg.src = "Images/Buttons/pauseButton_Updated.png";
+        playButtonImg.src = "Images/Buttons/playButton_Updated.png";
         level1Img.src = "Images/Buttons/level1.png";
         level2Img.src = "Images/Buttons/level2.png";
         level3Img.src = "Images/Buttons/level3.png";
-        restartButtonImg.src = "Images/Buttons/restartButton.png";
-        homeButtonImg.src = "Images/Buttons/homeButton.png";
+        restartButtonImg.src = "Images/Buttons/restartButton_Updated.png";
+        homeButtonImg.src = "Images/Buttons/homeButton_Updated.png";
 
         bananaMatchImg.src = "Images/Clear/bananaPeelClr.png";
         bottleMatchImg.src = "Images/Clear/bottleClr.png";
@@ -404,13 +412,13 @@
 
         sortingBackgroundImg.src = "Images/Other/sortingBackground.png";
         paperBackImg.src = "Images/Other/paperBack.png";
-        paperFrontImg.src = "Images/Other/paperFront.png";
+        paperFrontImg.src = "Images/Other/paperFront_Updated.png";
         comingledBackImg.src = "Images/Other/comingledBack.png";
-        comingledFrontImg.src = "Images/Other/comingledFront.png";
+        comingledFrontImg.src = "Images/Other/comingledFront_Updated.png";
         organicsBackImg.src = "Images/Other/organicsBack.png";
-        organicsFrontImg.src = "Images/Other/organicsFront.png";
+        organicsFrontImg.src = "Images/Other/organicsFront_Updated.png";
         landfillBackImg.src = "Images/Other/landfillBack.png";
-        landfillFrontImg.src = "Images/Other/landfillFront.png";
+        landfillFrontImg.src = "Images/Other/landfillFront_Updated.png";
 
         //Audio
         backgroundMusic.loop = true;
@@ -1203,6 +1211,39 @@
               buttonSound.play();
             }
 
+            currentState = state.TUT_INTRO;
+
+            playButton.x = canvas.width / 2 - originalPlayButtonSize / 2;
+            playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
+            playButton.size = originalPlayButtonSize;
+            currentPlayButtonSize = originalPlayButtonSize;
+            increasePlayButtonSize = true;
+          }
+          
+          toggleAudio(x, y);
+        } else if (currentState == state.TUT_INTRO){
+          if (playButton.clicked(x, y)) {
+            if (!muted) {
+              buttonSound.load();
+              buttonSound.play();
+            }
+            currentState = state.TUTORIAL;
+
+            playButton.x = canvas.width / 8 - originalPlayButtonSize / 2;
+            playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
+            playButton.size = originalPlayButtonSize;
+            currentPlayButtonSize = originalPlayButtonSize;
+            increasePlayButtonSize = true;
+          }
+
+          toggleAudio(x, y);
+        }else if (currentState == state.TUTORIAL){
+          if (playButton.clicked(x, y)) {
+            if (!muted) {
+              buttonSound.load();
+              buttonSound.play();
+            }
+
             currentState = state.SORTLEVEL;
 
             level1Button.x = canvas.width / 8;
@@ -1212,7 +1253,7 @@
             level3Button.x = canvas.width / 8 + levelButtonWidth * 3;
             level3Button.y = canvas.height / 2 - levelButtonHeight / 2;
           }
-
+          
           toggleAudio(x, y);
         } else if (currentState == state.SORTLEVEL) {
           if (
@@ -1902,6 +1943,42 @@
         );
       }
 
+      function drawtutorial_introScreen(){
+        ctx.drawImage(tutorial_introImg, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(
+          playButton.image,
+          playButton.x,
+          playButton.y,
+          playButton.size,
+          playButton.size
+        );
+        ctx.drawImage(
+          muteButton.image,
+          muteButton.x,
+          muteButton.y,
+          muteButton.size,
+          muteButton.size
+        );
+      }
+
+      function drawtutorialScreen(){
+        ctx.drawImage(tutorialImg, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(
+          playButton.image,
+          playButton.x,
+          playButton.y,
+          playButton.size,
+          playButton.size
+        );
+        ctx.drawImage(
+          muteButton.image,
+          muteButton.x,
+          muteButton.y,
+          muteButton.size,
+          muteButton.size
+        );                     
+      }
+
       function drawSortingChooseLevelScreen() {
         ctx.drawImage(sortingLevelSelectImg, 0, 0, canvas.width, canvas.height);
         ctx.drawImage(
@@ -2442,6 +2519,18 @@
           drawSortingIntro2();
 
           changePlayButtonSize();
+        } else if (currentState == state.TUT_INTRO){
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          drawtutorial_introScreen();
+
+          changePlayButtonSize();
+        } else if (currentState == state.TUTORIAL){
+           ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          drawtutorialScreen();
+
+          changePlayButtonSize();         
         } else if (currentState == state.SORTLEVEL) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
