@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
+  <head lang="en">
     <meta charset="utf-8" />
     <title>Zero Waste Games</title>
     <style>
@@ -13,13 +13,24 @@
         display: block;
         margin: 0 auto;
       }
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
       <div id="selectedItem"
         style="text-align:center; font-size:24px; margin-top:10px; color:#333;"
-        Selected: None 
+        Selected: None   
       </div>
     </style>
   </head>
-  <body>
+  <body>   
+    <div id="status-announcer" class="visually-hidden" aria-live="polite"></div>
     <!-- Vision template max width is 653px (translates to 435px height) -->
     <!-- Original is 960px width and 640px height -->
     <canvas id="myCanvas" width="960" height="640"></canvas>
@@ -46,6 +57,7 @@
 
       var canvas = document.getElementById("myCanvas");
       var ctx = canvas.getContext("2d");
+      const statusAnnouncer = document.getElementById("status-announcer");
       var contextScale = 0.68;
       //ctx.scale(contextScale,contextScale);
 
@@ -426,6 +438,7 @@
         sortingMusic.loop = true;
         sortingMusic.src = "Sound/sortingMusic.mp3";
         buttonSound.src = "Sound/buttonPop.mp3";
+        tileMatchSound.src = "Sound/ding.mp3";
       }
 
       var dragImg;
@@ -1146,6 +1159,7 @@
 
         if (currentState == state.MAININTRO) {
           if (playButton.clicked(x, y)) {
+            statusAnnouncer.textContent = "Welcome 1 screen.";
             if (!muted) {
               backgroundMusic.play();
               buttonSound.load();
@@ -1160,6 +1174,7 @@
 
         } else if (currentState == state.WELCOME1) {
           if (playButton.clicked(x, y)) {
+            statusAnnouncer.textContent = "Welcome 2 screen.";
             if (!muted) {
               buttonSound.load();
               buttonSound.play();
@@ -1173,6 +1188,7 @@
 
         } else if (currentState == state.WELCOME2) {
           if (playButton.clicked(x, y)) {
+            statusAnnouncer.textContent = "Sorting intro 1 screen.";
             if (!muted) {
               buttonSound.load();
               buttonSound.play();
@@ -1189,6 +1205,7 @@
           
         } else if (currentState == state.SORTINTRO1) {
           if (playButton.clicked(x, y)) {
+            statusAnnouncer.textContent = "Sorting intro 2 screen.";
             if (!muted) {
               buttonSound.load();
               buttonSound.play();
@@ -1206,6 +1223,7 @@
           toggleAudio(x, y);
         } else if (currentState == state.SORTINTRO2) {
           if (playButton.clicked(x, y)) {
+            statusAnnouncer.textContent = "Tutorial intro screen.";
             if (!muted) {
               buttonSound.load();
               buttonSound.play();
@@ -1223,6 +1241,7 @@
           toggleAudio(x, y);
         } else if (currentState == state.TUT_INTRO){
           if (playButton.clicked(x, y)) {
+            statusAnnouncer.textContent = "Tutorial screen.";
             if (!muted) {
               buttonSound.load();
               buttonSound.play();
@@ -1239,6 +1258,7 @@
           toggleAudio(x, y);
         }else if (currentState == state.TUTORIAL){
           if (playButton.clicked(x, y)) {
+            statusAnnouncer.textContent = "Level choosing screen.";
             if (!muted) {
               buttonSound.load();
               buttonSound.play();
@@ -1267,16 +1287,19 @@
             }
 
             if (level1Button.clicked(x, y)) {
+              statusAnnouncer.textContent = " Starting level 1";
               console.log('level 1');
               level = 1;
             }
 
             if (level2Button.clicked(x, y)) {
+              statusAnnouncer.textContent = " Starting level 3";
               console.log('level 2');
               level = 2;
             }
 
             if (level3Button.clicked(x, y)) {
+              statusAnnouncer.textContent = " Starting level 3";
               console.log('level 3');
               level = 3;
             }
@@ -1329,6 +1352,7 @@
 
           if (pauseButton.clicked(x, y) && itemsRemaining >= 1) {
             if (!timer.isPaused()) {
+              statusAnnouncer.textContent = "Game paused.";
               if (!muted) {
                 buttonSound.load();
                 buttonSound.play();
@@ -1347,6 +1371,7 @@
                 originalPlayButtonSize / 8;
               pauseButton.size = originalPlayButtonSize;
             } else {
+              statusAnnouncer.textContent = "Game resumed";
               if (!muted) {
                 buttonSound.load();
                 buttonSound.play();
@@ -1362,6 +1387,7 @@
           }
 
           if (restartButton.clicked(x, y) && timer.isPaused()) {
+            statusAnnouncer.textContent = "Restarting game. Level choosing sreen.";
             if (!muted) {
               buttonSound.load();
               buttonSound.play();
@@ -1391,6 +1417,7 @@
           }
 
           if (homeButton.clicked(x, y) && timer.isPaused()) {
+            statusAnnouncer.textContent = "Returning to main screen.";
             if (!muted) {
               buttonSound.load();
               buttonSound.play();
@@ -1419,7 +1446,9 @@
             muteButton.size = soundButtonSize;
           }
         } else if (currentState == state.END) {
+          statusAnnouncer.textContent = "Ending game.";
           if (restartButton.clicked(x, y)) {
+            statusAnnouncer.textContent = "Restarting game. Level choosing sreen.";
             if (!muted) {
               buttonSound.load();
               buttonSound.play();
@@ -1634,6 +1663,8 @@
                 draggedGarbage.type == landfill)
             ) {
               validPlacement = false;
+              statusAnnouncer.textContent = "Incorrect!";
+              setTimeout(() => {statusAnnouncer.textContent = '';}, 1000);
             }
 
             if (validPlacement) {
@@ -1748,6 +1779,7 @@
           const selected = garbage[index];
 
           if(selected.type === correctType) {
+            
             if(!muted) {
               tileMatchSound.load();
               tileMatchSound.play();
@@ -1759,6 +1791,7 @@
             } else {
               landfillSorted++;
             }
+            statusAnnouncer.textContent = `Correct! Score is now ${scorePercentage}%.`; 
 
             garbage.splice(index, 1);
             itemsRemaining--;
@@ -1783,6 +1816,7 @@
 
       function toggleAudio(x, y) {
         if (muteButton.clicked(x, y) && !muted) {
+          statusAnnouncer.textContent = "Audio muted.";
           if (currentState == state.PLAYSORT) {
             sortingMusic.pause();
           } else {
@@ -1792,6 +1826,7 @@
           muted = true;
           muteButton.image = unmuteImg;
         } else if (muteButton.clicked(x, y) && muted) {
+          statusAnnouncer.textContent = "Audio unmuted.";
           if (currentState == state.PLAYSORT) {
             sortingMusic.play();
           } else {
@@ -2564,6 +2599,7 @@
               } else {
                 landfillSorted++;
               }
+              statusAnnouncer.textContent = `Correct! Score is now ${scorePercentage}%.`; 
 
               garbage.splice(i, 1);
               itemsRemaining--;
@@ -2615,7 +2651,7 @@
               backgroundMusic.currentTime = 0;
               backgroundMusic.play();
             }
-
+            statusAnnouncer.textContent = `Time's up! You sorted ${scorePercentage}% correctly.`;
             currentState = state.END;
 
             homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
@@ -2641,7 +2677,7 @@
               backgroundMusic.currentTime = 0;
               backgroundMusic.play();
             }
-
+            statusAnnouncer.textContent = `Congratulations! You won by sorting all ${startingGarbageCount} items correctly.`;
             currentState = state.END;
 
             homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
