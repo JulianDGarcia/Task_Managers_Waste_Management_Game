@@ -92,6 +92,7 @@
       var timer = new Timer();
       var timerTime;
       var timeElapsed = Number(0).toFixed(2);
+      var newTime; //Variable used for the added time when an incorrect input occurs
 
       var chooseButtonSize = 200;
       var originalPlayButtonSize = 100;
@@ -558,6 +559,7 @@
       function setSortLevelBoard() {
         if (level == 1) {
           timerTime = 60000;
+          newTime = 3000; //Sets the time for lvl 3 to 3 extra seconds per incorrect input.
           dropGarbageInterval = 2000;
           garbageQueue = [
             new Garbage(
@@ -680,6 +682,7 @@
 
         if (level == 2) {
           timerTime = 60000;
+          newTime = 2000; //Sets the time for lvl 2 to be 2 extra seconds per incorrect input.
           dropGarbageInterval = 1500;
           garbageQueue = [
             new Garbage(
@@ -858,6 +861,7 @@
 
         if (level == 3) {
           timerTime = 60000;
+          newTime = 0; // Incorrect inputs on lvl 3 result in no added time.
           dropGarbageInterval = 1000;
           garbageQueue = [
             new Garbage(
@@ -1664,6 +1668,7 @@
             ) {
               validPlacement = false;
               statusAnnouncer.textContent = "Incorrect!";
+              //timer.setTimerTime(timerTime + newTime); // Adds time due to the incorrect placement.
               setTimeout(() => {statusAnnouncer.textContent = '';}, 1000);
             }
 
@@ -1671,6 +1676,8 @@
               draggedGarbage.image = dragImg;
               garbage.push(draggedGarbage);
             } else {
+              timerTime += newTime;
+              timer.setTimerTime(timerTime); // Adds time due to the incorrect placement.
               draggedGarbage.image = dragImg;
               draggedGarbage.x = tempX;
               draggedGarbage.y = tempY;
