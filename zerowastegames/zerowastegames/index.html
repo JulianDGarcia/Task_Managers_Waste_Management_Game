@@ -54,6 +54,9 @@
 
       document.addEventListener("keyup", spaceHandler, false);
       document.addEventListener("keyup", binSelectedHandler, false);
+      document.addEventListener("keyup", toggleMuteHandler, false);
+      document.addEventListener("keyup", actPauseMenu, false);
+      document.addEventListener("keyup", pauseMenuHandler, false);
 
       var canvas = document.getElementById("myCanvas");
       var ctx = canvas.getContext("2d");
@@ -1391,7 +1394,7 @@
           }
 
           if (restartButton.clicked(x, y) && timer.isPaused()) {
-            statusAnnouncer.textContent = "Restarting game. Level choosing sreen.";
+            statusAnnouncer.textContent = "Restarting game. Level choosing screen.";
             if (!muted) {
               buttonSound.load();
               buttonSound.play();
@@ -1732,7 +1735,195 @@
 
       //function to handle non-mouse functioning of item selection
       function spaceHandler(e) {
-        if (currentState == state.PLAYSORT) {
+        if (currentState == state.MAININTRO) {
+          if (e.key === "Space" || e.key === " ") {
+            statusAnnouncer.textContent = "Welcome 1 screen.";
+            if (!muted) {
+              backgroundMusic.play();
+              buttonSound.load();
+              buttonSound.play();
+            }
+            currentState = state.WELCOME1;
+            playButton.size = originalPlayButtonSize;
+            currentPlayButtonSize = originalPlayButtonSize;
+            increasePlayButtonSize = true;
+          }
+          toggleAudio(x, y); 
+
+        } else if (currentState == state.WELCOME1) {
+          if (e.key === "Space" || e.key === " ") {
+            statusAnnouncer.textContent = "Welcome 2 screen.";
+            if (!muted) {
+              buttonSound.load();
+              buttonSound.play();
+            }
+            currentState = state.WELCOME2;
+            playButton.size = originalPlayButtonSize;
+            currentPlayButtonSize = originalPlayButtonSize;
+            increasePlayButtonSize = true;
+          }
+          toggleAudio(x, y);
+
+        } else if (currentState == state.WELCOME2) {
+          if (e.key === "Space" || e.key === " ") {
+            statusAnnouncer.textContent = "Sorting intro 1 screen.";
+            if (!muted) {
+              buttonSound.load();
+              buttonSound.play();
+            }
+            currentState = state.SORTINTRO1;
+
+            playButton.x = canvas.width / 2 - originalPlayButtonSize / 2;
+            playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
+            playButton.size = originalPlayButtonSize;
+            currentPlayButtonSize = originalPlayButtonSize;
+            increasePlayButtonSize = true;
+          }
+          toggleAudio(x, y);
+          
+        } else if (currentState == state.SORTINTRO1) {
+          if (e.key === "Space" || e.key === " ") {
+            statusAnnouncer.textContent = "Sorting intro 2 screen.";
+            if (!muted) {
+              buttonSound.load();
+              buttonSound.play();
+            }
+
+            currentState = state.SORTINTRO2;
+
+            playButton.x = canvas.width / 2 - originalPlayButtonSize / 2;
+            playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
+            playButton.size = originalPlayButtonSize;
+            currentPlayButtonSize = originalPlayButtonSize;
+            increasePlayButtonSize = true;
+          }
+
+          toggleAudio(x, y);
+        } else if (currentState == state.SORTINTRO2) {
+          if (e.key === "Space" || e.key === " ") {
+            statusAnnouncer.textContent = "Tutorial intro screen.";
+            if (!muted) {
+              buttonSound.load();
+              buttonSound.play();
+            }
+
+            currentState = state.TUT_INTRO;
+
+            playButton.x = canvas.width / 2 - originalPlayButtonSize / 2;
+            playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
+            playButton.size = originalPlayButtonSize;
+            currentPlayButtonSize = originalPlayButtonSize;
+            increasePlayButtonSize = true;
+          }
+          
+          toggleAudio(x, y);
+        } else if (currentState == state.TUT_INTRO){
+          if (e.key === "Space" || e.key === " ") {
+            statusAnnouncer.textContent = "Tutorial screen.";
+            if (!muted) {
+              buttonSound.load();
+              buttonSound.play();
+            }
+            currentState = state.TUTORIAL;
+
+            playButton.x = canvas.width / 8 - originalPlayButtonSize / 2;
+            playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
+            playButton.size = originalPlayButtonSize;
+            currentPlayButtonSize = originalPlayButtonSize;
+            increasePlayButtonSize = true;
+          }
+
+          toggleAudio(x, y);
+        }else if (currentState == state.TUTORIAL){
+          if (e.key === "Space" || e.key === " ") {
+            statusAnnouncer.textContent = "Level choosing screen.";
+            if (!muted) {
+              buttonSound.load();
+              buttonSound.play();
+            }
+
+            currentState = state.SORTLEVEL;
+
+            level1Button.x = canvas.width / 8;
+            level1Button.y = canvas.height / 2 - levelButtonHeight / 2;
+            level2Button.x = canvas.width / 8 + levelButtonWidth * (3 / 2);
+            level2Button.y = canvas.height / 2 - levelButtonHeight / 2;
+            level3Button.x = canvas.width / 8 + levelButtonWidth * 3;
+            level3Button.y = canvas.height / 2 - levelButtonHeight / 2;
+          }
+          
+          toggleAudio(x, y);
+        } else if (currentState == state.SORTLEVEL) {
+          if (
+            level1Button.clicked(x, y) ||
+            level2Button.clicked(x, y) ||
+            level3Button.clicked(x, y)
+          ) {
+            if (!muted) {
+              buttonSound.load();
+              buttonSound.play();
+            }
+
+            if (level1Button.clicked(x, y)) {
+              statusAnnouncer.textContent = " Starting level 1";
+              console.log('level 1');
+              level = 1;
+            }
+
+            if (level2Button.clicked(x, y)) {
+              statusAnnouncer.textContent = " Starting level 3";
+              console.log('level 2');
+              level = 2;
+            }
+
+            if (level3Button.clicked(x, y)) {
+              statusAnnouncer.textContent = " Starting level 3";
+              console.log('level 3');
+              level = 3;
+            }
+
+            setSortLevelBoard();
+
+            currentState = state.PLAYSORT;
+
+            pauseButton.image = pauseButtonImg;
+            pauseButton.x = sidebarLocalXOrigin + binWidth * (1 / 8);
+            pauseButton.y = canvas.height * (7 / 16);
+            pauseButton.size = sortButtonSize;
+
+            muteButton.x = sidebarLocalXOrigin + binWidth * (9 / 16);
+            muteButton.y = canvas.height * (7 / 16);
+            muteButton.size = sortButtonSize;
+
+            homeButton.x =
+              canvas.width / 2 -
+              originalPlayButtonSize * 2 -
+              originalPlayButtonSize / 4;
+            homeButton.y = canvas.height / 2 + originalPlayButtonSize / 2;
+            homeButton.size = originalPlayButtonSize;
+
+            restartButton.x =
+              canvas.width / 2 -
+              originalPlayButtonSize +
+              originalPlayButtonSize / 8;
+            restartButton.y =
+              canvas.height / 2 -
+              originalPlayButtonSize / 2 -
+              originalPlayButtonSize / 8;
+            restartButton.size = originalPlayButtonSize;
+
+            if (!muted) {
+              backgroundMusic.pause();
+              sortingMusic.currentTime = 0;
+              sortingMusic.play();
+            }
+
+            timer.setTimerTime(timerTime);
+            timer.start();
+          }
+
+          toggleAudio(x, y);
+        } else if (currentState == state.PLAYSORT && !timer.isPaused()) {
           if (e.key === "Space" || e.key === " ") {
             e.preventDefault();
 
@@ -1748,6 +1939,137 @@
             const display = document.getElementById("selectedItem");
             const name = selGarbage.image.src.split("/").pop() || "Unknown";
             display.textContent = "Selected: " + name;
+          }
+      }
+    }
+
+      function toggleMuteHandler(e) {
+        if(e.key === "m") {
+          e.preventDefault(); 
+          if (!muted) {
+            statusAnnouncer.textContent = "Audio muted.";
+            if (currentState == state.PLAYSORT) {
+              sortingMusic.pause();
+            } else {
+              backgroundMusic.pause();
+            }
+
+          muted = true;
+          muteButton.image = unmuteImg;
+        } else if (muted) {
+            statusAnnouncer.textContent = "Audio unmuted.";
+            if (currentState == state.PLAYSORT) {
+              sortingMusic.play();
+            } else {
+              backgroundMusic.play();
+            }
+
+            muted = false;
+            muteButton.image = muteImg;
+          }
+        }
+      }
+
+      function actPauseMenu(e) {
+        if(currentState == state.PLAYSORT) {
+          if(e.key === "Escape" && itemsRemaining >= 1) {
+            e.preventDefault();
+            
+            if (!timer.isPaused()) {
+              statusAnnouncer.textContent = "Game paused.";
+              if (!muted) {
+                buttonSound.load();
+                buttonSound.play();
+              }
+
+              timer.pause();
+
+              pauseButton.image = playButtonImg;
+              pauseButton.x =
+                canvas.width / 2 -
+                originalPlayButtonSize * 2 -
+                originalPlayButtonSize / 4;
+              pauseButton.y =
+                canvas.height / 2 -
+                originalPlayButtonSize / 2 -
+                originalPlayButtonSize / 8;
+              pauseButton.size = originalPlayButtonSize;
+            } else {
+              statusAnnouncer.textContent = "Game resumed";
+              if (!muted) {
+                buttonSound.load();
+                buttonSound.play();
+              }
+
+              timer.unpause();
+
+              pauseButton.image = pauseButtonImg;
+              pauseButton.x = sidebarLocalXOrigin + binWidth * (1 / 8);
+              pauseButton.y = canvas.height * (7 / 16);
+              pauseButton.size = sortButtonSize;
+            }
+          }
+        }
+      }
+
+      function pauseMenuHandler(e) {
+        if(currentState == state.PLAYSORT) {
+          if(e.key === "r" && timer.isPaused()) {
+            statusAnnouncer.textContent = "Restarting game. Level choosing screen.";
+            if (!muted) {
+              buttonSound.load();
+              buttonSound.play();
+
+              sortingMusic.pause();
+              backgroundMusic.currentTime = 0;
+              backgroundMusic.play();
+            }
+
+            currentState = state.SORTLEVEL;
+
+            homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
+            homeButton.y =
+              canvas.height / 2 +
+              canvas.height / 4 -
+              originalPlayButtonSize / 2;
+
+            restartButton.x = canvas.width / 4 - originalPlayButtonSize / 2;
+            restartButton.y =
+              canvas.height / 2 +
+              canvas.height / 4 -
+              originalPlayButtonSize / 2;
+
+            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+            muteButton.y = soundButtonSize / 8;
+            muteButton.size = soundButtonSize;
+          } else if(e.key === "h" && timer.isPaused()) {
+            statusAnnouncer.textContent = "Returning to main screen.";
+            if (!muted) {
+              buttonSound.load();
+              buttonSound.play();
+
+              sortingMusic.pause();
+              backgroundMusic.currentTime = 0;
+              backgroundMusic.play();
+            }
+
+            currentState = state.SORTINTRO1;
+
+            homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
+            homeButton.y =
+              canvas.height / 2 +
+              canvas.height / 4 -
+              originalPlayButtonSize / 2;
+
+            restartButton.x = canvas.width / 4 - originalPlayButtonSize / 2;
+            restartButton.y =
+              canvas.height / 2 +
+              canvas.height / 4 -
+              originalPlayButtonSize / 2;
+
+            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+            muteButton.y = soundButtonSize / 8;
+            muteButton.size = soundButtonSize;
           }
         }
       }
