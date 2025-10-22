@@ -1,10 +1,11 @@
 class Garbage {
-  constructor(x, y, size, image, type) {
+  constructor(x, y, size, image, type, name = "Unknown item") {
     this.x = x;
     this.y = y;
     this.size = size;
     this.image = image;
     this.type = type;
+    this.name = name;
 
     this.falling = true;
   }
