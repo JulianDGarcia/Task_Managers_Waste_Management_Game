@@ -12,6 +12,37 @@
         background: #ffffff;
         display: block;
         margin: 0 auto;
+        transition: transform 0.3s ease;
+      }
+      canvas.scale-fullscreen {
+        width: 100vw;
+        height: calc(100vh - 150px);
+        max-width: 100vw;
+        max-height: calc(100vh - 150px);
+        object-fit: contain;
+      }
+      .scale-controls {
+        text-align: center;
+        margin: 20px auto;
+        padding: 10px;
+      }
+      .scale-btn {
+        padding: 10px 20px;
+        margin: 0 10px;
+        font-size: 16px;
+        cursor: pointer;
+        border: 2px solid #333;
+        background-color: #f0f0f0;
+        border-radius: 5px;
+        transition: background-color 0.2s;
+      }
+      .scale-btn:hover {
+        background-color: #e0e0e0;
+      }
+      .scale-btn.active {
+        background-color: #4CAF50;
+        color: white;
+        border-color: #45a049;
       }
       .visually-hidden {
         position: absolute;
@@ -31,6 +62,11 @@
     <!-- Vision template max width is 653px (translates to 435px height) -->
     <!-- Original is 960px width and 640px height -->
     <canvas id="myCanvas" width="960" height="640"></canvas>
+
+    <div class="scale-controls">
+      <button id="normalScaleBtn" class="scale-btn active">Normal Screen</button>
+      <button id="fullscreenBtn" class="scale-btn">Full Screen</button>
+    </div>
 
     <script src="Classes/Tile.js"></script>
     <script src="Classes/Timer.js"></script>
@@ -61,6 +97,69 @@
       const statusAnnouncer = document.getElementById("status-announcer");
       var contextScale = 0.68;
       //ctx.scale(contextScale,contextScale);
+
+      // Helper function to get correct mouse coordinates accounting for canvas scaling
+      function getMousePos(e) {
+        const rect = canvas.getBoundingClientRect();
+
+        // Calculate the aspect ratios
+        const canvasAspect = canvas.width / canvas.height;
+        const rectAspect = rect.width / rect.height;
+
+        let renderWidth, renderHeight, offsetX, offsetY;
+
+        // Check if object-fit: contain is creating letterboxing/pillarboxing
+        if (rectAspect > canvasAspect) {
+          // Pillarboxing (black bars on left/right)
+          renderHeight = rect.height;
+          renderWidth = renderHeight * canvasAspect;
+          offsetX = (rect.width - renderWidth) / 2;
+          offsetY = 0;
+        } else {
+          // Letterboxing (black bars on top/bottom)
+          renderWidth = rect.width;
+          renderHeight = renderWidth / canvasAspect;
+          offsetX = 0;
+          offsetY = (rect.height - renderHeight) / 2;
+        }
+
+        const scaleX = canvas.width / renderWidth;
+        const scaleY = canvas.height / renderHeight;
+
+        return {
+          x: (e.clientX - rect.left - offsetX) * scaleX,
+          y: (e.clientY - rect.top - offsetY) * scaleY
+        };
+      }
+
+      // Scale button handlers
+      const normalScaleBtn = document.getElementById("normalScaleBtn");
+      const fullscreenBtn = document.getElementById("fullscreenBtn");
+
+      function setCanvasScale(scaleType) {
+        // Remove all scale classes
+        canvas.classList.remove("scale-fullscreen");
+
+        // Remove active class from all buttons
+        normalScaleBtn.classList.remove("active");
+        fullscreenBtn.classList.remove("active");
+
+        // Apply the selected scale
+        if (scaleType === "fullscreen") {
+          canvas.classList.add("scale-fullscreen");
+          fullscreenBtn.classList.add("active");
+        } else {
+          normalScaleBtn.classList.add("active");
+        }
+      }
+
+      normalScaleBtn.addEventListener("click", function() {
+        setCanvasScale("normal");
+      });
+
+      fullscreenBtn.addEventListener("click", function() {
+        setCanvasScale("fullscreen");
+      });
 
       var state = {
         WELCOME1: 0,
@@ -1357,8 +1456,9 @@
       }
 
       function clickHandler(e) {
-        var x = e.pageX - canvas.offsetLeft;
-        var y = e.pageY - canvas.offsetTop;
+        const pos = getMousePos(e);
+        var x = pos.x;
+        var y = pos.y;
 
         if (currentState == state.MAININTRO) {
           if (playButton.clicked(x, y)) {
@@ -1718,8 +1818,9 @@
       }
 
       function mouseDownHandler(e) {
-        var x = e.pageX - canvas.offsetLeft;
-        var y = e.pageY - canvas.offsetTop;
+        const pos = getMousePos(e);
+        var x = pos.x;
+        var y = pos.y;
 
         if (currentState == state.PLAYSORT) {
           for (i = garbage.length - 1; i >= 0; i--) {
@@ -1849,8 +1950,9 @@
       }
 
       function mouseMoveHandler(e) {
-        var x = e.pageX - canvas.offsetLeft;
-        var y = e.pageY - canvas.offsetTop;
+        const pos = getMousePos(e);
+        var x = pos.x;
+        var y = pos.y;
         let nowHoveringButton = null;
 
         if (currentState == state.PLAYSORT) {
