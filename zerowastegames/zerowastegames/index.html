@@ -2459,6 +2459,66 @@
               ttsButton.size = soundButtonSize;
             }
           }
+        } else {
+          if(e.key === "Escape") {
+
+            e.preventDefault();
+
+            if (!timer.isPaused()) {
+              statusAnnouncer.textContent = "Game paused.";
+              if (!muted) {
+                buttonSound.load();
+                buttonSound.play();
+              }
+
+              timer.pause();
+
+              // Grid layout: 2 rows x 3 columns with smaller buttons
+              var pauseButtonSize = 70; // Smaller button size for pause screen
+              var gridSpacing = 100; // Space between buttons
+              var gridStartX = canvas.width / 2 - gridSpacing - 30;
+              var gridStartY = canvas.height / 2 - 50; // Moved down to avoid covering text
+
+              pauseButton.image = playButtonImg;
+              pauseButton.x = gridStartX - gridSpacing;
+              pauseButton.y = gridStartY;
+              pauseButton.size = pauseButtonSize;
+
+              restartButton.x = gridStartX;
+              restartButton.y = gridStartY;
+              restartButton.size = pauseButtonSize;
+
+              homeButton.x = gridStartX + gridSpacing;
+              homeButton.y = gridStartY;
+              homeButton.size = pauseButtonSize;
+
+              muteButton.x = gridStartX - gridSpacing;
+              muteButton.y = gridStartY + gridSpacing;
+              muteButton.size = pauseButtonSize;
+
+              ttsButton.x = gridStartX;
+              ttsButton.y = gridStartY + gridSpacing;
+              ttsButton.size = pauseButtonSize;
+            } else {
+              statusAnnouncer.textContent = "Game resumed";
+              if (!muted) {
+                buttonSound.load();
+                buttonSound.play();
+              }
+
+              timer.unpause();
+
+              pauseButton.image = pauseButtonImg;
+              pauseButton.x = sidebarLocalXOrigin + binWidth * (1 / 8);
+              pauseButton.y = canvas.height * (7 / 16);
+              pauseButton.size = sortButtonSize;
+
+              // Reset TTS button to original position (not visible during active gameplay)
+              ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+              ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
+              ttsButton.size = soundButtonSize;
+            }
+          }
         }
       }
 
@@ -2508,6 +2568,61 @@
               backgroundMusic.play();
             }
 
+            currentState = state.SORTINTRO1;
+
+            // Reset play button position for SORTINTRO1 screen
+            playButton.x = canvas.width / 2 - originalPlayButtonSize / 2;
+            playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
+            playButton.size = originalPlayButtonSize;
+            currentPlayButtonSize = originalPlayButtonSize;
+            increasePlayButtonSize = true;
+
+            homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
+            homeButton.y =
+              canvas.height / 2 +
+              canvas.height / 4 -
+              originalPlayButtonSize / 2;
+
+            restartButton.x = canvas.width / 4 - originalPlayButtonSize / 2;
+            restartButton.y =
+              canvas.height / 2 +
+              canvas.height / 4 -
+              originalPlayButtonSize / 2;
+
+            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+            muteButton.y = soundButtonSize / 8;
+            muteButton.size = soundButtonSize;
+
+            // Reset TTS button to original position
+            ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+            ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
+            ttsButton.size = soundButtonSize;
+          }
+        } else {
+          if(e.key === "r") {
+            currentState = state.SORTLEVEL;
+
+            homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
+            homeButton.y =
+              canvas.height / 2 +
+              canvas.height / 4 -
+              originalPlayButtonSize / 2;
+
+            restartButton.x = canvas.width / 4 - originalPlayButtonSize / 2;
+            restartButton.y =
+              canvas.height / 2 +
+              canvas.height / 4 -
+              originalPlayButtonSize / 2;
+
+            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+            muteButton.y = soundButtonSize / 8;
+            muteButton.size = soundButtonSize;
+
+            // Reset TTS button to original position
+            ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+            ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
+            ttsButton.size = soundButtonSize;
+          } else if(e.key === "h" && timer.isPaused()) {
             currentState = state.SORTINTRO1;
 
             // Reset play button position for SORTINTRO1 screen
