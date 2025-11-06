@@ -180,6 +180,7 @@
       var currentState = state.LOADING;
 
       var mouseDown = false;
+      var menuOP = false;
 
       var percent;
       var timerBarHeight = 30;
@@ -1502,7 +1503,7 @@
         var y = pos.y;
 
         if (currentState == state.MAININTRO) {
-          if (playButton.clicked(x, y)) {
+          if (playButton.clicked(x, y) && menuOP == false) {
             statusAnnouncer.textContent = "Welcome 1 screen.";
             if (!muted) {
               backgroundMusic.play();
@@ -1517,7 +1518,7 @@
           toggleAudio(x, y); 
 
         } else if (currentState == state.WELCOME1) {
-          if (playButton.clicked(x, y)) {
+          if (playButton.clicked(x, y) && menuOP == false) {
             statusAnnouncer.textContent = "Welcome 2 screen.";
             if (!muted) {
               buttonSound.load();
@@ -1531,7 +1532,7 @@
           toggleAudio(x, y);
 
         } else if (currentState == state.WELCOME2) {
-          if (playButton.clicked(x, y)) {
+          if (playButton.clicked(x, y) && menuOP == false) {
             statusAnnouncer.textContent = "Sorting intro 1 screen.";
             if (!muted) {
               buttonSound.load();
@@ -1548,7 +1549,7 @@
           toggleAudio(x, y);
           
         } else if (currentState == state.SORTINTRO1) {
-          if (playButton.clicked(x, y)) {
+          if (playButton.clicked(x, y) && menuOP == false) {
             statusAnnouncer.textContent = "Sorting intro 2 screen.";
             if (!muted) {
               buttonSound.load();
@@ -1566,7 +1567,7 @@
 
           toggleAudio(x, y);
         } else if (currentState == state.SORTINTRO2) {
-          if (playButton.clicked(x, y)) {
+          if (playButton.clicked(x, y) && menuOP == false) {
             statusAnnouncer.textContent = "Tutorial intro screen.";
             if (!muted) {
               buttonSound.load();
@@ -1584,7 +1585,7 @@
           
           toggleAudio(x, y);
         } else if (currentState == state.TUT_INTRO){
-          if (playButton.clicked(x, y)) {
+          if (playButton.clicked(x, y) && menuOP == false) {
             statusAnnouncer.textContent = "Tutorial screen.";
             if (!muted) {
               buttonSound.load();
@@ -1601,7 +1602,7 @@
 
           toggleAudio(x, y);
         }else if (currentState == state.TUTORIAL){
-          if (playButton.clicked(x, y)) {
+          if (playButton.clicked(x, y) && menuOP == false) {
             statusAnnouncer.textContent = "Level choosing screen.";
             if (!muted) {
               buttonSound.load();
@@ -1620,10 +1621,11 @@
           
           toggleAudio(x, y);
         } else if (currentState == state.SORTLEVEL) {
-          if (
+          if ((
             level1Button.clicked(x, y) ||
             level2Button.clicked(x, y) ||
-            level3Button.clicked(x, y)
+            level3Button.clicked(x, y) ) &&
+            menuOP == false
           ) {
             if (!muted) {
               buttonSound.load();
@@ -1703,7 +1705,7 @@
               }
 
               timer.pause();
-
+              
               // Grid layout: 2 rows x 3 columns with smaller buttons
               var pauseButtonSize = 70; // Smaller button size for pause screen
               var gridSpacing = 100; // Space between buttons
@@ -2282,7 +2284,7 @@
       //function to handle non-mouse functioning of item selection
       function spaceHandler(e) {
         if (currentState == state.MAININTRO) {
-          if (e.key === "Space" || e.key === " ") {
+          if (e.key === "Space" || e.key === " " && menuOP == false) {
             statusAnnouncer.textContent = "Welcome 1 screen.";
             if (!muted) {
               backgroundMusic.play();
@@ -2297,7 +2299,7 @@
           toggleAudio(x, y); 
 
         } else if (currentState == state.WELCOME1) {
-          if (e.key === "Space" || e.key === " ") {
+          if (e.key === "Space" || e.key === " " && menuOP == false) {
             statusAnnouncer.textContent = "Welcome 2 screen.";
             if (!muted) {
               buttonSound.load();
@@ -2311,7 +2313,7 @@
           toggleAudio(x, y);
 
         } else if (currentState == state.WELCOME2) {
-          if (e.key === "Space" || e.key === " ") {
+          if (e.key === "Space" || e.key === " " && menuOP == false) {
             statusAnnouncer.textContent = "Sorting intro 1 screen.";
             if (!muted) {
               buttonSound.load();
@@ -2328,7 +2330,7 @@
           toggleAudio(x, y);
           
         } else if (currentState == state.SORTINTRO1) {
-          if (e.key === "Space" || e.key === " ") {
+          if (e.key === "Space" || e.key === " " && menuOP == false) {
             statusAnnouncer.textContent = "Sorting intro 2 screen.";
             if (!muted) {
               buttonSound.load();
@@ -2346,7 +2348,7 @@
 
           toggleAudio(x, y);
         } else if (currentState == state.SORTINTRO2) {
-          if (e.key === "Space" || e.key === " ") {
+          if (e.key === "Space" || e.key === " " && menuOP == false) {
             statusAnnouncer.textContent = "Tutorial intro screen.";
             if (!muted) {
               buttonSound.load();
@@ -2364,7 +2366,7 @@
           
           toggleAudio(x, y);
         } else if (currentState == state.TUT_INTRO){
-          if (e.key === "Space" || e.key === " ") {
+          if (e.key === "Space" || e.key === " " && menuOP == false) {
             statusAnnouncer.textContent = "Tutorial screen.";
             if (!muted) {
               buttonSound.load();
@@ -2381,7 +2383,7 @@
 
           toggleAudio(x, y);
         }else if (currentState == state.TUTORIAL){
-          if (e.key === "Space" || e.key === " ") {
+          if (e.key === "Space" || e.key === " " && menuOP == false) {
             statusAnnouncer.textContent = "Level choosing screen.";
             if (!muted) {
               buttonSound.load();
@@ -2575,6 +2577,7 @@
 
       function actPauseMenu(e) {
         if(currentState == state.PLAYSORT) {
+          menuOP = false;
           if(e.key === "Escape" && itemsRemaining >= 1) {
             e.preventDefault();
 
@@ -2633,6 +2636,50 @@
               ttsButton.size = soundButtonSize;
             }
           }
+        } else {
+          if(e.key === "Escape") {
+            e.preventDefault();
+            
+            if (menuOP == false) {
+              menuOP = true;
+              
+              var pauseButtonSize = 70; // Smaller button size for pause screen
+              var gridSpacing = 100; // Space between buttons
+              var gridStartX = canvas.width / 2 - gridSpacing - 30;
+              var gridStartY = canvas.height / 2 - 50; // Moved down to avoid covering text
+              
+              pauseButton.image = playButtonImg;
+              pauseButton.x = gridStartX - gridSpacing;
+              pauseButton.y = gridStartY;
+              pauseButton.size = pauseButtonSize;
+              
+              restartButton.x = gridStartX;
+              restartButton.y = gridStartY;
+              restartButton.size = pauseButtonSize;
+
+              homeButton.x = gridStartX + gridSpacing;
+              homeButton.y = gridStartY;
+              homeButton.size = pauseButtonSize;
+
+              muteButton.x = gridStartX - gridSpacing;
+              muteButton.y = gridStartY + gridSpacing;
+              muteButton.size = pauseButtonSize;
+
+              ttsButton.x = gridStartX;
+              ttsButton.y = gridStartY + gridSpacing;
+              ttsButton.size = pauseButtonSize;
+            } else {
+              menuOP = false;
+              muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+              muteButton.y = soundButtonSize / 8;
+              muteButton.size = soundButtonSize;
+
+              // Reset TTS button to original position
+              ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+              ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
+              ttsButton.size = soundButtonSize;
+            }
+          }
         }
       }
 
@@ -2650,6 +2697,7 @@
             }
 
             currentState = state.SORTLEVEL;
+            menuOP = false;
 
             homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
             homeButton.y =
@@ -2683,6 +2731,64 @@
             }
 
             currentState = state.SORTINTRO1;
+            menuOP = false;
+
+            // Reset play button position for SORTINTRO1 screen
+            playButton.x = canvas.width / 2 - originalPlayButtonSize / 2;
+            playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
+            playButton.size = originalPlayButtonSize;
+            currentPlayButtonSize = originalPlayButtonSize;
+            increasePlayButtonSize = true;
+
+            homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
+            homeButton.y =
+              canvas.height / 2 +
+              canvas.height / 4 -
+              originalPlayButtonSize / 2;
+
+            restartButton.x = canvas.width / 4 - originalPlayButtonSize / 2;
+            restartButton.y =
+              canvas.height / 2 +
+              canvas.height / 4 -
+              originalPlayButtonSize / 2;
+
+            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+            muteButton.y = soundButtonSize / 8;
+            muteButton.size = soundButtonSize;
+
+            // Reset TTS button to original position
+            ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+            ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
+            ttsButton.size = soundButtonSize;
+          }
+        } else {
+          if(e.key === "r" && menuOP == true) {
+            currentState = state.SORTLEVEL;
+            menuOP = false;
+
+            homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
+            homeButton.y =
+              canvas.height / 2 +
+              canvas.height / 4 -
+              originalPlayButtonSize / 2;
+
+            restartButton.x = canvas.width / 4 - originalPlayButtonSize / 2;
+            restartButton.y =
+              canvas.height / 2 +
+              canvas.height / 4 -
+              originalPlayButtonSize / 2;
+
+            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+            muteButton.y = soundButtonSize / 8;
+            muteButton.size = soundButtonSize;
+
+            // Reset TTS button to original position
+            ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+            ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
+            ttsButton.size = soundButtonSize;
+          } else if(e.key === "h" && menuOP == true) {
+            currentState = state.SORTINTRO1;
+            menuOP = false;
 
             // Reset play button position for SORTINTRO1 screen
             playButton.x = canvas.width / 2 - originalPlayButtonSize / 2;
@@ -3616,48 +3722,72 @@
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
           drawMainIntroScreen();
+          if(menuOP == true) {
+            drawPauseScreen();
+          }
 
           changePlayButtonSize();
         } else if (currentState == state.WELCOME1) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
           drawWelcome1Screen();
+          if(menuOP == true) {
+            drawPauseScreen();
+          }
 
           changePlayButtonSize();
         } else if (currentState == state.WELCOME2) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
           drawWelcome2Screen();
+          if(menuOP == true) {
+            drawPauseScreen();
+          }
 
           changePlayButtonSize();
         } else if (currentState == state.SORTINTRO1) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
           drawSortingIntro1();
+          if(menuOP == true) {
+            drawPauseScreen();
+          }
 
           changePlayButtonSize();
         } else if (currentState == state.SORTINTRO2) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
           drawSortingIntro2();
+          if(menuOP == true) {
+            drawPauseScreen();
+          }
 
           changePlayButtonSize();
         } else if (currentState == state.TUT_INTRO){
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
           drawtutorial_introScreen();
+          if(menuOP == true) {
+            drawPauseScreen();
+          }
 
           changePlayButtonSize();
         } else if (currentState == state.TUTORIAL){
            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
           drawtutorialScreen();
+          if(menuOP == true) {
+            drawPauseScreen();
+          }
 
           changePlayButtonSize();         
         } else if (currentState == state.SORTLEVEL) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
           drawSortingChooseLevelScreen();
+          if(menuOP == true) {
+            drawPauseScreen();
+          }
 
           changeLevelButtonSize();
         } else if (currentState == state.PLAYSORT) {
