@@ -91,6 +91,7 @@
       document.addEventListener("keyup", toggleTTSHandler, false);
       document.addEventListener("keyup", actPauseMenu, false);
       document.addEventListener("keyup", pauseMenuHandler, false);
+      document.addEventListener("keyup", toggleLabelsHandler, false);
 
       var canvas = document.getElementById("myCanvas");
       var ctx = canvas.getContext("2d");
@@ -218,6 +219,7 @@
 
       var muted = false;
       var ttsEnabled = true;
+      var labelsEnabled = true;
 
       var loadingImg = image("Images/Screens/loadScreen.png");
       var mainIntroImg = new Image();
@@ -233,15 +235,26 @@
 
       var muteImg = new Image();
       var unmuteImg = new Image();
+      var muteImgLabeled = new Image();
+      var unmuteImgLabeled = new Image();
       var ttsOnImg = new Image();
+      var ttsOnImgLabeled = new Image();
       var ttsOffImg = new Image();
+      var ttsOffImgLabeled = new Image();
       var pauseButtonImg = new Image();
+      var pauseButtonImgLabeled = new Image();
       var playButtonImg = new Image();
+      var playButtonImgLabeled = new Image();
       var level1Img = new Image();
       var level2Img = new Image();
       var level3Img = new Image();
       var restartButtonImg = new Image();
+      var restartButtonImgLabeled = new Image();
       var homeButtonImg = new Image();
+      var homeButtonImgLabeled = new Image();
+      var labelsButtonImg = new Image();
+      var labelsButtonOffImg = new Image();
+      var resumePauseImg = new Image();
 
       var bananaMatchImg = new Image();
       var bottleMatchImg = new Image();
@@ -346,15 +359,26 @@
 
         muteImg.onload = finishedLoading;
         unmuteImg.onload = finishedLoading;
+        muteImgLabeled.onload = finishedLoading;
+        unmuteImgLabeled.onload = finishedLoading;
         ttsOnImg.onload = finishedLoading;
+        ttsOnImgLabeled.onload = finishedLoading;
         ttsOffImg.onload = finishedLoading;
+        ttsOffImgLabeled.onload = finishedLoading;
         pauseButtonImg.onload = finishedLoading;
+        pauseButtonImgLabeled.onload = finishedLoading;
         playButtonImg.onload = finishedLoading;
+        playButtonImgLabeled.onload = finishedLoading;
         level1Img.onload = finishedLoading;
         level2Img.onload = finishedLoading;
         level3Img.onload = finishedLoading;
         restartButtonImg.onload = finishedLoading;
+        restartButtonImgLabeled.onload = finishedLoading;
         homeButtonImg.onload = finishedLoading;
+        homeButtonImg.onload = finishedLoading;
+        labelsButtonImg.onload = finishedLoading;
+        labelsButtonOffImg.onload = finishedLoading;
+        resumePauseImg.onload = finishedLoading;
 
         bananaMatchImg.onload = finishedLoading;
         bottleMatchImg.onload = finishedLoading;
@@ -441,24 +465,34 @@
         welcome1Img.src = "Images/Screens/welcome1.png";
         welcome2Img.src = "Images/Screens/welcome2.png";
         tutorial_introImg.src = "Images/Screens/tutorial_intro.png";
-        tutorialImg.src = "Images/Screens/tutorial.png";
+        tutorialImg.src = "Images/Screens/tutorial_Updated.png";
         sortingIntro1Img.src = "Images/Screens/sortingIntro1.png";
         sortingIntro2Img.src = "Images/Screens/sortingIntro2.png";
         sortingLevelSelectImg.src = "Images/Screens/chooseLevelSorting.png";
         endScreenSortingImg.src = "Images/Screens/endScreenSorting.png";
         pauseScreenImg.src = "Images/Screens/pauseScreen.png";
 
-        muteImg.src = "Images/Buttons/muteButton_Updated.png";
-        unmuteImg.src = "Images/Buttons/unmuteButton_Updated.png";
-        ttsOnImg.src = "Images/Buttons/disableTextToSpeechButton.png";
-        ttsOffImg.src = "Images/Buttons/enableTextToSpeechButton.png";
-        pauseButtonImg.src = "Images/Buttons/pauseButton_Updated.png";
-        playButtonImg.src = "Images/Buttons/playButton_Updated.png";
+        muteImg.src = "Images/Buttons/muteButton.png";
+        unmuteImg.src = "Images/Buttons/unmuteButton.png";
+        muteImgLabeled.src = "Images/Buttons/muteButton_Updated.png";
+        unmuteImgLabeled.src = "Images/Buttons/unmuteButton_Updated.png";
+        ttsOnImg.src = "Images/Buttons/disableTextToSpeechButton_Updated.png";
+        ttsOnImgLabeled.src = "Images/Buttons/disableTextToSpeechButton.png";
+        ttsOffImg.src = "Images/Buttons/enableTextToSpeechButton_Updated.png";
+        ttsOffImgLabeled.src = "Images/Buttons/enableTextToSpeechButton.png";
+        pauseButtonImg.src = "Images/Buttons/pauseButton.png";
+        pauseButtonImgLabeled.src = "Images/Buttons/pauseButton_Updated.png"
+        playButtonImg.src = "Images/Buttons/playButton.png";
+        playButtonImgLabeled.src = "Images/Buttons/playButton_Updated.png"
         level1Img.src = "Images/Buttons/level1.png";
         level2Img.src = "Images/Buttons/level2.png";
         level3Img.src = "Images/Buttons/level3.png";
-        restartButtonImg.src = "Images/Buttons/restartButton_Updated.png";
-        homeButtonImg.src = "Images/Buttons/homeButton_Updated.png";
+        restartButtonImg.src = "Images/Buttons/restartButton.png";
+        restartButtonImgLabeled.src = "Images/Buttons/restartButton_Updated.png"
+        homeButtonImg.src = "Images/Buttons/homeButton.png";
+        homeButtonImgLabeled.src = "Images/Buttons/homeButton_Updated.png"
+        labelsButtonImg.src = "Images/Buttons/labelButtonOn.png";
+        labelsButtonOffImg = "Images/Buttons/labelButtonOff.png";
 
         bananaMatchImg.src = "Images/Clear/bananaPeelClr.png";
         bottleMatchImg.src = "Images/Clear/bottleClr.png";
@@ -678,6 +712,13 @@
         ttsOnImg
       );
 
+      var labelsButton = new CircularButton(
+        canvas.width - soundButtonSize - soundButtonSize / 8,
+        soundButtonSize / 8,
+        soundButtonSize,
+        labelsButtonImg
+      );
+
       // Text area class for hoverable text regions
       class TextArea {
         constructor(x, y, width, height, text) {
@@ -758,7 +799,7 @@
         100,
         480,
         330,
-        "To select items, click the Space keybind to cycle through unsorted items, to store an item, press the 1, 2, 3, 4 keybinds respectively to store an item into a bin for sorting!"
+        "To select an item for sorting, press space bar to cycle through unsorted items, to store an item, press 1, 2, 3, or 4 to store an item into a bin for sorting!"
       );
 
       // Choose level screen text area
@@ -2501,6 +2542,37 @@
         }
       }
 
+      function toggleLabelsHandler(e) {
+        if (e.key === "l") {
+          e.preventDefault();
+          if (labelsEnabled) {
+            statusAnnouncer.textContent = "Labels disabled.";
+            labelsButton.image = labelsButtonOffImg;
+            playButton.image = playButtonImg;
+            if (!muted)  { muteButton.image = muteImg; }
+            else if (muted) { muteButton.image = unmuteImg; }
+            if (!ttsEnabled) { ttsButton.image = ttsOffImg; }
+            else if (ttsEnabled) { ttsButton.image = ttsOnImg; }
+            homeButton.image = homeButtonImg;
+            restartButton.image = restartButtonImg;
+            pauseButton.image = pauseButtonImg;
+            labelsEnabled = false;
+          } else {
+            statusAnnouncer.textContent = "Labels enabled.";
+            labelsButton.image = labelsButtonImg;
+            playButton.image = playButtonImgLabeled;            
+            if (!muted)  { muteButton.image = muteImgLabeled; }
+            else if (muted) { muteButton.image = unmuteImgLabeled; }
+            if (!ttsEnabled) { ttsButton.image = ttsOffImgLabeled; }
+            else if (ttsEnabled) { ttsButton.image = ttsOnImgLabeled; }
+            homeButton.image = homeButtonImgLabeled;
+            restartButton.image = restartButtonImgLabeled;
+            pauseButton.image = pauseButtonImgLabeled;
+            labelsEnabled = true;          
+          }
+        }
+      }
+
       function actPauseMenu(e) {
         if(currentState == state.PLAYSORT) {
           if(e.key === "Escape" && itemsRemaining >= 1) {
@@ -2753,12 +2825,14 @@
           if (ttsButton.clicked(x, y) && ttsEnabled) {
             statusAnnouncer.textContent = "Text-to-speech disabled.";
             ttsEnabled = false;
-            ttsButton.image = ttsOffImg;
+            if (!labelsEnabled) { ttsButton.image = ttsOffImg; }
+            else if (labelsEnabled) { ttsButton.image = ttsOffImgLabeled; }
             speechSynthesis.cancel();
           } else if (ttsButton.clicked(x, y) && !ttsEnabled) {
             statusAnnouncer.textContent = "Text-to-speech enabled.";
             ttsEnabled = true;
-            ttsButton.image = ttsOnImg;
+            if (!labelsEnabled) { ttsButton.image = ttsOnImg; }
+            else if (labelsEnabled) { ttsButton.image = ttsOnImgLabeled; }
           }
         }
       }
