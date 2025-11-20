@@ -228,6 +228,21 @@
         }
       }
 
+      //variables for fall speed control
+      const minSpeed = 0.5;
+      const maxSpeed = 8;
+      const stepSpeed = 0.5;
+      
+      function clampSpeed(s){
+        return Math.max(minSpeed, Math.min(maxSpeed, s))
+      }
+
+      var decFallButton;
+      var incrFallButton;
+      var resetFallButton;
+
+      var defaultFallSpeed = 2;
+
       normalScaleBtn.addEventListener("click", function() {
         setCanvasScale("normal");
       });
@@ -348,6 +363,10 @@
       var labelsButtonImg = new Image();
       var labelsButtonOffImg = new Image();
       var resumePauseImg = new Image();
+      var decFallSpeedImg = new Image();
+      var incrFallSpeedImg = new Image();
+      var resetFallSpeedImg = new Image();
+
       var resumePauseImgLabeled = new Image();
 
       var bananaMatchImg = new Image();
@@ -556,6 +575,10 @@
         landfillBackImg.onload = finishedLoading;
         landfillFrontImg.onload = finishedLoading;
 
+        decFallSpeedImg.onload = finishedLoading;
+        incrFallSpeedImg.onload = finishedLoading;
+        resetFallSpeedImg.onload = finishedLoading;
+
         mainIntroImg.src = "Images/Screens/mainIntro.png";
         welcome1Img.src = "Images/Screens/welcome1.png";
         welcome2Img.src = "Images/Screens/welcome2.png";
@@ -588,6 +611,9 @@
         homeButtonImgLabeled.src = "Images/Buttons/homeButton_Updated.png"
         labelsButtonImg.src = "Images/Buttons/labelButtonOn.png";
         labelsButtonOffImg.src = "Images/Buttons/labelButtonOff.png";
+        decFallSpeedImg.src = "Images/Buttons/DecFallSpeedImg.png";
+        incrFallSpeedImg.src = "Images/Buttons/IncrFallSpeedImg.png";
+        resetFallSpeedImg.src = "Images/Buttons/resetFallSpeedImg.png";
         resumePauseImg.src = "Images/Buttons/pauseResumeButton.png";
         resumePauseImgLabeled.src = "Images/Buttons/pauseResumeButton_Updated.png";
 
@@ -821,6 +847,15 @@
         labelsButtonImg
       );
 
+      decFallButton = new CircularButton(0,0,70, decFallSpeedImg);
+      decFallButton.name = "Decrease Fall Speed Button";
+
+      incrFallButton = new CircularButton(0,0,70, incrFallSpeedImg);
+      incrFallButton.name = "Increase Fall Speed Button";
+
+      resetFallButton = new CircularButton(0,0,70, resetFallSpeedImg);
+      resetFallButton.name = "Reset Fall Speed Button";
+
       // Text area class for hoverable text regions
       class TextArea {
         constructor(x, y, width, height, text) {
@@ -924,6 +959,12 @@
         0, 0, 0, 0, // Will be set in drawSidebar
         "Current score"
       );
+
+      //Buttons to change speed of items falling
+      var slowSpeedMenu = new TextArea(0,0,60,60, "Dcrease Item Fall Speed");
+      var fastSpeedArea = new TextArea(0,0,60,60, "Increase Item Fall Speed");
+      var resetSpeed = new TextArea(0,0,120,40,"Reset Fall Speed");
+
 
       function setSortLevelBoard() {
         if (level == 1) {
@@ -1740,7 +1781,7 @@
             }
 
             if (level2Button.clicked(x, y)) {
-              statusAnnouncer.textContent = " Starting level 3";
+              statusAnnouncer.textContent = " Starting level 2";
               console.log('level 2');
               level = 2;
             }
@@ -1810,9 +1851,9 @@
               
               // Grid layout: 2 rows x 3 columns with smaller buttons
               var pauseButtonSize = 70; // Smaller button size for pause screen
-              var gridSpacing = 100; // Space between buttons
+              var gridSpacing = 85; // Space between buttons
               var gridStartX = canvas.width / 2 - gridSpacing - 30;
-              var gridStartY = canvas.height / 2 - 50; // Moved down to avoid covering text
+              var gridStartY = canvas.height / 2 - 80; // Moved down to avoid covering text
 
               pauseButton.image = resumePauseImg;
               pauseButton.x = gridStartX - gridSpacing;
@@ -1834,6 +1875,23 @@
               ttsButton.x = gridStartX;
               ttsButton.y = gridStartY + gridSpacing;
               ttsButton.size = pauseButtonSize;
+
+              //The 3 buttons to decrease, increase and reset the fall speed
+              //new row for the fall speed buttons
+              const row3 = gridStartY + 2 * gridSpacing;
+
+              decFallButton.x = ttsButton.x - gridSpacing;
+              decFallButton.y = row3;
+              decFallButton.size = pauseButtonSize;
+
+              incrFallButton.x = gridStartX + gridSpacing;
+              incrFallButton.y = row3;
+              incrFallButton.size = pauseButtonSize;
+
+              resetFallButton.x = gridStartX;
+              resetFallButton.y = row3;
+              resetFallButton.size = pauseButtonSize;
+
             } else {
               statusAnnouncer.textContent = "Game resumed";
               if (!muted) {
@@ -1853,6 +1911,39 @@
               ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
               ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
               ttsButton.size = soundButtonSize;
+            }
+          }
+          //The buttons will be made clickable when timer is paused
+          if(timer.isPaused()){
+            const minFall = 0.5;
+            const maxFall = 8;
+            const step = 0.5;
+
+            function announceAndShow(text) {
+              statusAnnouncer.textContent = text;
+              if(!muted) { buttonSound.load(); buttonSound.play(); }
+              if(ttsEnabled) {
+              speechSynthesis.cancel();
+              speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+              }
+            }
+
+            if(decFallButton.clicked(x, y)) {
+              fallSpeed = Math.max(minFall, +(fallSpeed - step).toFixed(2));
+              announceAndShow(`Fall speed decreased to ${fallSpeed}.`);
+              return;
+            }
+
+            if(incrFallButton.clicked(x, y)) {
+              fallSpeed = Math.min(maxFall, +(fallSpeed + step).toFixed(2));
+              announceAndShow(`Fall speed increased to ${fallSpeed}.`);
+              return;
+            }
+
+            if(resetFallButton.clicked(x, y)) {
+              fallSpeed = defaultFallSpeed;
+              announceAndShow(`Fall speed reset to ${fallSpeed}.`);
+              return;
             }
           }
 
@@ -1931,6 +2022,7 @@
             ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
             ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
             ttsButton.size = soundButtonSize;
+
           }
         } else if (currentState == state.END) {
           statusAnnouncer.textContent = "Ending game.";
@@ -2168,6 +2260,19 @@
           if (!nowHoveringButton && homeButton.clicked(x, y)) {
             nowHoveringButton = homeButton;
           }
+
+          if(!nowHoveringButton && timer.isPaused()){
+            if(decFallButton.clicked(x,y)){
+              nowHoveringButton = decFallButton;
+            }
+            else if(incrFallButton.clicked(x,y)){
+              nowHoveringButton = incrFallButton;
+            }
+            else if(resetFallButton.clicked(x,y)){
+              nowHoveringButton = resetFallButton;
+            }
+          }
+
         }
 
         // CHECK GARBAGE ITEMS
@@ -2726,10 +2831,10 @@
               showPauseVolumeControls(true);
 
               // Grid layout: 2 rows x 3 columns with smaller buttons
-              var pauseButtonSize = 70; // Smaller button size for pause screen
-              var gridSpacing = 100; // Space between buttons
+              var pauseButtonSize = 70; // Smaller button size for pause screen 
+              var gridSpacing = 85; // Space between buttons  //changed from 100 to 85
               var gridStartX = canvas.width / 2 - gridSpacing - 30;
-              var gridStartY = canvas.height / 2 - 50; // Moved down to avoid covering text
+              var gridStartY = canvas.height / 2 - 80; // Moved down to avoid covering text //changed from 50 to 80
 
               pauseButton.x = gridStartX - gridSpacing;
               pauseButton.y = gridStartY;
@@ -2750,6 +2855,23 @@
               ttsButton.x = gridStartX;
               ttsButton.y = gridStartY + gridSpacing;
               ttsButton.size = pauseButtonSize;
+
+              //The 3 buttons to decrease, increase and reset the fall speed
+              //new row for the fall speed buttons
+              const row3 = gridStartY + 2 * gridSpacing;
+
+              decFallButton.x = ttsButton.x - gridSpacing;
+              decFallButton.y = row3;
+              decFallButton.size = pauseButtonSize;
+
+              incrFallButton.x = gridStartX + gridSpacing;
+              incrFallButton.y = row3;
+              incrFallButton.size = pauseButtonSize;
+
+              resetFallButton.x = gridStartX;
+              resetFallButton.y = row3;
+              resetFallButton.size = pauseButtonSize;
+
             } else {
               statusAnnouncer.textContent = "Game resumed";
               if (!muted) {
@@ -3514,7 +3636,31 @@
           ttsButton.size,
           ttsButton.size
         );
-      }
+        
+        if(currentState === state.PLAYSORT && timer.isPaused()){
+          ctx.drawImage(
+            decFallButton.image, 
+            decFallButton.x, 
+            decFallButton.y, 
+            decFallButton.size, 
+            decFallButton.size
+          );
+          ctx.drawImage(
+            incrFallButton.image, 
+            incrFallButton.x, 
+            incrFallButton.y, 
+            incrFallButton.size, 
+            incrFallButton.size
+          );
+          ctx.drawImage(
+            resetFallButton.image, 
+            resetFallButton.x, 
+            resetFallButton.y, 
+            resetFallButton.size, 
+            resetFallButton.size
+          );
+        }
+        }
 
       function drawSortingGame() {
         ctx.drawImage(sortingBackgroundImg, 0, 0, canvas.width, canvas.height);
