@@ -148,6 +148,7 @@
       document.addEventListener("keyup", actPauseMenu, false);
       document.addEventListener("keyup", pauseMenuHandler, false);
       document.addEventListener("keyup", toggleLabelsHandler, false);
+      document.addEventListener("keyup", timerToggleHandler, false);
 
       (function(){
         var s = document.getElementById('volumeSlider');
@@ -285,6 +286,9 @@
       var timerTime;
       var timeElapsed = Number(0).toFixed(2);
       var newTime; //Variable used for the added time when an incorrect input occurs
+      var timeIsPaused = false;
+      var gameIsPaused = false;
+      var pauseMenuOpen = false;
 
       var chooseButtonSize = 200;
       var originalPlayButtonSize = 100;
@@ -341,6 +345,10 @@
       var endScreenSortingImg = new Image();
       var pauseScreenImg = new Image();
 
+      var timerOffImg = new Image();
+      var timerOffImgLabeled = new Image();
+      var timerOnImg = new Image();
+      var timerOnImgLabeled = new Image();
       var muteImg = new Image();
       var unmuteImg = new Image();
       var muteImgLabeled = new Image();
@@ -470,6 +478,10 @@
         endScreenSortingImg.onload = finishedLoading;
         pauseScreenImg.onload = finishedLoading;
 
+        timerOffImg.onload = finishedLoading;
+        timerOffImgLabeled.onload = finishedLoading;
+        timerOnImg.onload = finishedLoading;
+        timerOnImgLabeled.onload = finishedLoading;
         muteImg.onload = finishedLoading;
         unmuteImg.onload = finishedLoading;
         muteImgLabeled.onload = finishedLoading;
@@ -590,6 +602,10 @@
         endScreenSortingImg.src = "Images/Screens/endScreenSorting.png";
         pauseScreenImg.src = "Images/Screens/pauseScreen.png";
 
+        timerOffImg.src = "Images/Buttons/TimerButtonOff.png";
+        timerOffImgLabeled.src = "Images/Buttons/TimerButtonOff_Updated.png";
+        timerOnImg.src = "Images/Buttons/TimerButton.png";
+        timerOnImgLabeled.src = "Images/Buttons/TimerButton_Updated.png"
         muteImg.src = "Images/Buttons/muteButton.png";
         unmuteImg.src = "Images/Buttons/unmuteButton.png";
         muteImgLabeled.src = "Images/Buttons/muteButton_Updated.png";
@@ -817,6 +833,13 @@
         restartButtonImg
       );
       restartButton.name = "Restart Button";
+
+      var timerButton = new CircularButton(
+        canvas.width / 3 + originalPlayButtonSize / 2,
+        canvas.height / 2 + canvas.height / 4 - originalPlayButtonSize / 2,
+        originalPlayButtonSize,
+        timerOnImg
+      );
 
       var homeButton = new CircularButton(
         canvas.width / 3 + originalPlayButtonSize / 2,
@@ -1839,7 +1862,8 @@
           }
 
           if (pauseButton.clicked(x, y) && itemsRemaining >= 1) {
-            if (!timer.isPaused()) {
+            gameIsPaused = !gameIsPaused;
+            if (gameIsPaused) {
               statusAnnouncer.textContent = "Game paused.";
               if (!muted) {
                 buttonSound.load();
@@ -1947,7 +1971,7 @@
             }
           }
 
-          if (restartButton.clicked(x, y) && timer.isPaused()) {
+          if (restartButton.clicked(x, y) && gameIsPaused) {
             statusAnnouncer.textContent = "Restarting game. Level choosing screen.";
             if (!muted) {
               buttonSound.load();
@@ -2239,7 +2263,7 @@
         }
 
         // CHECK PAUSE BUTTON (visible during gameplay)
-        if (!nowHoveringButton && currentState === state.PLAYSORT && !timer.isPaused()) {
+        if (!nowHoveringButton && currentState === state.PLAYSORT && !gameIsPaused) {
           pauseButton.name = "Pause Button";
           if (pauseButton.clicked(x, y)) {
             nowHoveringButton = pauseButton;
@@ -2248,7 +2272,7 @@
 
         // CHECK RESTART AND HOME BUTTONS (visible during pause or end screen)
         if (!nowHoveringButton && (currentState === state.PLAYSORT && timer.isPaused() || currentState === state.END)) {
-          if (currentState === state.PLAYSORT && timer.isPaused()) {
+          if (currentState === state.PLAYSORT && gameIsPaused) {
             pauseButton.name = "Resume Button";
             if (pauseButton.clicked(x, y)) {
               nowHoveringButton = pauseButton;
@@ -2759,6 +2783,23 @@
         }
       }
 
+      function timerToggleHandler(e) {
+        e.preventDefault();
+
+        if (e.key === "p") {
+          pauseMenuOpen = !pauseMenuOpen;
+
+          if (timer.isPaused()){
+            statusAnnouncer.textContent = "Timer unpaused";
+            timer.unpause();
+          }else{
+            statusAnnouncer.textContent = "Timer paused";
+            timer.pause();
+          }
+          return false;
+        }
+      }
+
       function toggleLabelsHandler(e) {
         if (e.key === "l") {
           e.preventDefault();
@@ -2768,6 +2809,8 @@
             playButton.image = playButtonImg;
             if (!muted)  { muteButton.image = muteImg; }
             else if (muted) { muteButton.image = unmuteImg; }
+            if(!gameIsPaused) {timerButton.image = timerOnImg; }
+            else if (gameIsPaused) {timerButton.image = timerOffImg; }
             if (!ttsEnabled) { ttsButton.image = ttsOffImg; }
             else if (ttsEnabled) { ttsButton.image = ttsOnImg; }
             homeButton.image = homeButtonImg;
@@ -2781,6 +2824,8 @@
             playButton.image = playButtonImgLabeled;            
             if (!muted)  { muteButton.image = muteImgLabeled; }
             else if (muted) { muteButton.image = unmuteImgLabeled; }
+            if (!gameIsPaused) {timerButton.image = timerOnImgLabeled; }
+            else if (gameIsPaused) {timerButton.image = timerOffImgLabeled; }
             if (!ttsEnabled) { ttsButton.image = ttsOffImgLabeled; }
             else if (ttsEnabled) { ttsButton.image = ttsOnImgLabeled; }
             homeButton.image = homeButtonImgLabeled;
@@ -2820,14 +2865,15 @@
           if(e.key === "Escape" && itemsRemaining >= 1) {
             e.preventDefault();
 
-            if (!timer.isPaused()) {
+            if (!gameIsPaused) {
+              gameIsPaused = true;
+              timer.pause();
               statusAnnouncer.textContent = "Game paused.";
               if (!muted) {
                 buttonSound.load();
                 buttonSound.play();
               }
 
-              timer.pause();
               showPauseVolumeControls(true);
 
               // Grid layout: 2 rows x 3 columns with smaller buttons
@@ -2873,13 +2919,14 @@
               resetFallButton.size = pauseButtonSize;
 
             } else {
+              gameIsPaused = false;
+              timer.unpause();
               statusAnnouncer.textContent = "Game resumed";
               if (!muted) {
                 buttonSound.load();
                 buttonSound.play();
               }
 
-              timer.unpause();
               showPauseVolumeControls(false);
 
               pauseButton.x = sidebarLocalXOrigin + binWidth * (1 / 8);
@@ -2942,142 +2989,75 @@
       }
 
       function pauseMenuHandler(e) {
-        if(currentState == state.PLAYSORT) {
-          if(e.key === "r" && timer.isPaused()) {
-            showPauseVolumeControls(false);
-            statusAnnouncer.textContent = "Restarting game. Level choosing screen.";
-            if (!muted) {
-              buttonSound.load();
-              buttonSound.play();
+        if (!gameIsPaused) return;
 
-              sortingMusic.pause();
-              backgroundMusic.currentTime = 0;
-              backgroundMusic.play();
-            }
+        if (e.key === "r"){
+          gameIsPaused = false;
+          showPauseVolumeControls(false);
+          statusAnnouncer.textContent = "Restarting game. Level choosing screen.";
+          if (!muted) {
+            buttonSound.load();
+            buttonSound.play();
 
-            currentState = state.SORTLEVEL;
-            menuOP = false;
-
-            homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
-            homeButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize / 2;
-
-            restartButton.x = canvas.width / 4 - originalPlayButtonSize / 2;
-            restartButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize / 2;
-
-            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            muteButton.y = soundButtonSize / 8;
-            muteButton.size = soundButtonSize;
-
-            // Reset TTS button to original position
-            ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
-            ttsButton.size = soundButtonSize;
-          } else if(e.key === "h" && timer.isPaused()) {
-            showPauseVolumeControls(false);
-            statusAnnouncer.textContent = "Returning to main screen.";
-            if (!muted) {
-              buttonSound.load();
-              buttonSound.play();
-
-              sortingMusic.pause();
-              backgroundMusic.currentTime = 0;
-              backgroundMusic.play();
-            }
-
-            currentState = state.SORTINTRO1;
-            menuOP = false;
-
-            // Reset play button position for SORTINTRO1 screen
-            playButton.x = canvas.width / 2 - originalPlayButtonSize / 2;
-            playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
-            playButton.size = originalPlayButtonSize;
-            currentPlayButtonSize = originalPlayButtonSize;
-            //increasePlayButtonSize = true;
-
-            homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
-            homeButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize / 2;
-
-            restartButton.x = canvas.width / 4 - originalPlayButtonSize / 2;
-            restartButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize / 2;
-
-            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            muteButton.y = soundButtonSize / 8;
-            muteButton.size = soundButtonSize;
-
-            // Reset TTS button to original position
-            ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
-            ttsButton.size = soundButtonSize;
+            sortingMusic.pause();
+            backgroundMusic.currentTime = 0;
+            backgroundMusic.play();
           }
-        } else {
-          if(e.key === "r" && menuOP == true) {
-            currentState = state.SORTLEVEL;
-            menuOP = false;
 
-            homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
-            homeButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize / 2;
+          currentState = state.SORTLEVEL;
+          menuOP = false;
 
-            restartButton.x = canvas.width / 4 - originalPlayButtonSize / 2;
-            restartButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize / 2;
+          homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
+          homeButton.y = canvas.height / 2 + canvas.height / 4 - originalPlayButtonSize / 2;
 
-            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            muteButton.y = soundButtonSize / 8;
-            muteButton.size = soundButtonSize;
+          restartButton.x = canvas.width / 4 - originalPlayButtonSize / 2;
+          restartButton.y = canvas.height / 2 + canvas.height / 4 - originalPlayButtonSize / 2;
 
-            // Reset TTS button to original position
-            ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
-            ttsButton.size = soundButtonSize;
-          } else if(e.key === "h" && menuOP == true) {
-            currentState = state.SORTINTRO1;
-            menuOP = false;
+          muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+          muteButton.y = soundButtonSize / 8;
+          muteButton.size = soundButtonSize;
 
-            // Reset play button position for SORTINTRO1 screen
-            playButton.x = canvas.width / 2 - originalPlayButtonSize / 2;
-            playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
-            playButton.size = originalPlayButtonSize;
-            currentPlayButtonSize = originalPlayButtonSize;
-            //increasePlayButtonSize = true;
+          // Reset TTS button to original position
+          ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+          ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
+          ttsButton.size = soundButtonSize;
+        }else if (e.key === "h"){
+          gameIsPaused = false;
+          showPauseVolumeControls(false);
+          statusAnnouncer.textContent = "Returning to main screen.";
+          if (!muted) {
+            buttonSound.load();
+            buttonSound.play();
 
-            homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
-            homeButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize / 2;
-
-            restartButton.x = canvas.width / 4 - originalPlayButtonSize / 2;
-            restartButton.y =
-              canvas.height / 2 +
-              canvas.height / 4 -
-              originalPlayButtonSize / 2;
-
-            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            muteButton.y = soundButtonSize / 8;
-            muteButton.size = soundButtonSize;
-
-            // Reset TTS button to original position
-            ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
-            ttsButton.size = soundButtonSize;
+            sortingMusic.pause();
+            backgroundMusic.currentTime = 0;
+            backgroundMusic.play();
           }
+
+          currentState = state.SORTINTRO1;
+          menuOP = false;
+
+          // Reset play button position for SORTINTRO1 screen
+          playButton.x = canvas.width / 2 - originalPlayButtonSize / 2;
+          playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
+          playButton.size = originalPlayButtonSize;
+          currentPlayButtonSize = originalPlayButtonSize;
+          increasePlayButtonSize = true;
+
+          homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
+          homeButton.y = canvas.height / 2 + canvas.height / 4 - originalPlayButtonSize / 2;
+
+          restartButton.x = canvas.width / 4 - originalPlayButtonSize / 2;
+          restartButton.y = canvas.height / 2 + canvas.height / 4 - originalPlayButtonSize / 2;
+
+          muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+          muteButton.y = soundButtonSize / 8;
+          muteButton.size = soundButtonSize;
+
+          // Reset TTS button to original position
+          ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+          ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
+          ttsButton.size = soundButtonSize;
         }
       }
       
@@ -3621,7 +3601,7 @@
           homeButton.size
         );
 
-        // Row 2: Mute, TTS, [Reserved/Empty]
+        // Row 2: Mute, TTS, Timer Pause
         ctx.drawImage(
           muteButton.image,
           muteButton.x,
@@ -3635,6 +3615,13 @@
           ttsButton.y,
           ttsButton.size,
           ttsButton.size
+        );
+        ctx.drawImage(
+          timerButton.image,
+          timerButton.x,
+          timerButton.y,
+          timerButton.size,
+          timerButton.size
         );
         
         if(currentState === state.PLAYSORT && timer.isPaused()){
@@ -4146,7 +4133,7 @@
 
           //drawTime();
 
-          if (timer.isPaused()) {
+          if (gameIsPaused) {
             // Grid layout: 2 rows x 3 columns (already set when pausing)
             // Just draw the pause screen
             drawPauseScreen();
@@ -4214,7 +4201,7 @@
             muteButton.size = soundButtonSize;
           }
 
-          if (!timer.isPaused()) {
+          if (!gameIsPaused) {
             for (i = 0; i < garbage.length; i++) {
               for (j = 0; j < garbage.length; j++) {
                 if (i != j) {
