@@ -843,7 +843,7 @@
 
       var homeButton = new CircularButton(
         canvas.width / 3 + originalPlayButtonSize / 2,
-        canvas.height / 2 + canvas.height / 4 - originalPlayButtonSize / 2,
+        canvas.height / 3 + canvas.height / 4 - originalPlayButtonSize / 2,
         originalPlayButtonSize,
         homeButtonImg
       );
@@ -1897,11 +1897,11 @@
               muteButton.size = pauseButtonSize;
 
               ttsButton.x = gridStartX;
-              ttsButton.y = gridStartY + gridSpacing;
+              ttsButton.y = gridStartY - gridSpacing;
               ttsButton.size = pauseButtonSize;
 
               timerButton.x = gridStartX + gridSpacing + gridSpacing;
-              timerButton.y = gridstartY + gridSpacing;
+              timerButton.y = gridStartY + gridSpacing;
               timerButton.size = pauseButtonSize;
 
               //The 3 buttons to decrease, increase and reset the fall speed
@@ -2889,13 +2889,13 @@
 
       function actPauseMenu(e) {
         if(currentState == state.PLAYSORT) {
-          menuOP = false;
           showPauseVolumeControls(false);
           if(e.key === "Escape" && itemsRemaining >= 1) {
             e.preventDefault();
 
             if (!gameIsPaused) {
               gameIsPaused = true;
+              menuOP = true;
               timer.pause();
               statusAnnouncer.textContent = "Game paused.";
               if (!muted) {
@@ -2949,6 +2949,7 @@
 
             } else {
               gameIsPaused = false;
+              menuOP = false;
               if (!timer.isPaused()){
                 timer.unpause();
               }
@@ -3004,6 +3005,10 @@
               ttsButton.x = gridStartX;
               ttsButton.y = gridStartY + gridSpacing;
               ttsButton.size = pauseButtonSize;
+
+              timerButton.x = gridStartX + gridSpacing;
+              timerButton.y + gridStartY + gridSpacing;
+              timerButton.size = pauseButtonSize;
             } else {
               menuOP = false;             
               muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
@@ -3020,10 +3025,9 @@
       }
 
       function pauseMenuHandler(e) {
-        if (!gameIsPaused) return;
-
-        if (e.key === "r"){
-          gameIsPaused = false;
+        if (e.key === "r" && menuOP == true){
+          e.preventDefault();
+          gameIsPaused = false; 
           showPauseVolumeControls(false);
           statusAnnouncer.textContent = "Restarting game. Level choosing screen.";
           if (!muted) {
@@ -3052,7 +3056,8 @@
           ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
           ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
           ttsButton.size = soundButtonSize;
-        }else if (e.key === "h"){
+        } else if (e.key === "h" && menuOp == true){
+          e.preventDefault();
           gameIsPaused = false;
           showPauseVolumeControls(false);
           statusAnnouncer.textContent = "Returning to main screen.";
