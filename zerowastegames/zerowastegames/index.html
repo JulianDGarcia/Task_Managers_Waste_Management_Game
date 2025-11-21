@@ -1667,6 +1667,106 @@
         var x = pos.x;
         var y = pos.y;
 
+        if (menuOP == true && currentState != state.PLAYSORT) {
+          if (pauseButton.clicked(x, y)) {
+            menuOP = false;
+            if (!timer.isPaused()){
+              timer.unpause();
+            }
+            statusAnnouncer.textContent = "Game resumed";
+            if (!muted) {
+              buttonSound.load();
+              buttonSound.play();
+            }
+
+            showPauseVolumeControls(false);
+
+            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+            muteButton.y = soundButtonSize / 8;
+            muteButton.size = soundButtonSize;
+            
+            // Reset TTS button to original position (not visible during active gameplay)
+            ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+            ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
+            ttsButton.size = soundButtonSize;
+          } else if (restartButton.clicked(x, y)) {
+            statusAnnouncer.textContent = "Level choosing screen.";
+            menuOP = false;
+            if (!muted) {
+              buttonSound.load();
+              buttonSound.play();
+
+              sortingMusic.pause();
+              backgroundMusic.currentTime = 0;
+              backgroundMusic.play();
+            }
+
+            currentState = state.SORTLEVEL;
+            
+            level1Button.x = canvas.width / 8;
+            level1Button.y = canvas.height / 2 - levelButtonHeight / 2;
+            level2Button.x = canvas.width / 8 + levelButtonWidth * (3 / 2);
+            level2Button.y = canvas.height / 2 - levelButtonHeight / 2;
+            level3Button.x = canvas.width / 8 + levelButtonWidth * 3;
+            level3Button.y = canvas.height / 2 - levelButtonHeight / 2;
+
+
+            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+            muteButton.y = soundButtonSize / 8;
+            muteButton.size = soundButtonSize;
+
+            // Reset TTS button to original position
+            ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+            ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
+            ttsButton.size = soundButtonSize;
+          } else if (homeButton.clicked(x, y)) {
+            statusAnnouncer.textContent = "Returning to main screen.";
+            menuOP = false;
+            if (!muted) {
+              buttonSound.load();
+              buttonSound.play();
+
+              sortingMusic.pause();
+              backgroundMusic.currentTime = 0;
+              backgroundMusic.play();
+            }
+
+            currentState = state.SORTINTRO1;
+
+            // Reset play button position for SORTINTRO1 screen
+            playButton.x = canvas.width / 2 - originalPlayButtonSize / 2;
+            playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
+            playButton.size = originalPlayButtonSize;
+            currentPlayButtonSize = originalPlayButtonSize;
+            //increasePlayButtonSize = true;
+
+            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+            muteButton.y = soundButtonSize / 8;
+            muteButton.size = soundButtonSize;
+
+            // Reset TTS button to original position
+            ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
+            ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
+            ttsButton.size = soundButtonSize;
+          } else if (timerButton.clicked(x, y)) {
+            timeIsPaused = !timeIsPaused;
+            if (timeIsPaused){
+              timer.unpause();
+              statusAnnouncer.textContent = "Timer unpaused";
+              timerButton.image = timerOnImg;
+            } else {
+              timer.pause();
+              statusAnnouncer.textContent = "Timer paused";
+              timerButton.image = timerOffImg;
+            }
+
+            if (!muted) {
+              buttonSound.load();
+              buttonSound.play();
+            }
+          }
+        }
+        
         if (currentState == state.MAININTRO) {
           if (playButton.clicked(x, y) && menuOP == false) {
             statusAnnouncer.textContent = "Welcome 1 screen.";
@@ -1863,6 +1963,7 @@
 
           if (pauseButton.clicked(x, y) && itemsRemaining >= 1) {
             gameIsPaused = !gameIsPaused;
+            menuOP = true;
             if (gameIsPaused) {
               statusAnnouncer.textContent = "Game paused.";
               if (!muted) {
@@ -1897,10 +1998,10 @@
               muteButton.size = pauseButtonSize;
 
               ttsButton.x = gridStartX;
-              ttsButton.y = gridStartY - gridSpacing;
+              ttsButton.y = gridStartY + gridSpacing;
               ttsButton.size = pauseButtonSize;
 
-              timerButton.x = gridStartX + gridSpacing + gridSpacing;
+              timerButton.x = gridStartX + gridSpacing;
               timerButton.y = gridStartY + gridSpacing;
               timerButton.size = pauseButtonSize;
 
@@ -2711,7 +2812,7 @@
             }
 
             if (level2Button.clicked(x, y)) {
-              statusAnnouncer.textContent = " Starting level 3";
+              statusAnnouncer.textContent = " Starting level 2";
               console.log('level 2');
               level = 2;
             }
@@ -2959,6 +3060,10 @@
               ttsButton.y = gridStartY + gridSpacing;
               ttsButton.size = pauseButtonSize;
 
+              timerButton.x = gridStartX + gridSpacing;
+              timerButton.y = gridStartY + gridSpacing;
+              timeButton.size = pauseButtonSize;
+
               //The 3 buttons to decrease, increase and reset the fall speed
               //new row for the fall speed buttons
               const row3 = gridStartY + 2 * gridSpacing;
@@ -3035,7 +3140,7 @@
               ttsButton.size = pauseButtonSize;
 
               timerButton.x = gridStartX + gridSpacing;
-              timerButton.y + gridStartY + gridSpacing;
+              timerButton.y = gridStartY + gridSpacing;
               timerButton.size = pauseButtonSize;
             } else {
               menuOP = false;             
@@ -3055,7 +3160,9 @@
       function pauseMenuHandler(e) {
         if (e.key === "r" && menuOP == true){
           e.preventDefault();
-          gameIsPaused = false;
+          if(currentState == state.PLAYSORT) {
+            gameisPaused = false;
+          }
           menuOP = false; 
           showPauseVolumeControls(false);
           statusAnnouncer.textContent = "Restarting game. Level choosing screen.";
@@ -3069,6 +3176,13 @@
           }
 
           currentState = state.SORTLEVEL;
+          
+          level1Button.x = canvas.width / 8;
+          level1Button.y = canvas.height / 2 - levelButtonHeight / 2;
+          level2Button.x = canvas.width / 8 + levelButtonWidth * (3 / 2);
+          level2Button.y = canvas.height / 2 - levelButtonHeight / 2;
+          level3Button.x = canvas.width / 8 + levelButtonWidth * 3;
+          level3Button.y = canvas.height / 2 - levelButtonHeight / 2;
 
           homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
           homeButton.y = canvas.height / 2 + canvas.height / 4 - originalPlayButtonSize / 2;
@@ -3085,7 +3199,9 @@
           ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
           ttsButton.size = soundButtonSize;
         } else if (e.key === "h" && menuOP == true){
-          gameIsPaused = false;
+          if (currentState == state.PLAYSORT) {
+            gameIsPaused = false;
+          }
           menuOP = false;
           showPauseVolumeControls(false);
           statusAnnouncer.textContent = "Returning to main screen.";
