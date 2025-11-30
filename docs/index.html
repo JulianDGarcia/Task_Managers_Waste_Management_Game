@@ -288,6 +288,7 @@
       var newTime; //Variable used for the added time when an incorrect input occurs
       var timeIsPaused = false;
       var gameIsPaused = false;
+      var timerManuallyPaused = false; // Track if timer was manually paused via timerButton/P key
       var pauseMenuOpen = false;
 
       var chooseButtonSize = 200;
@@ -840,6 +841,7 @@
         originalPlayButtonSize / 1.5,
         timerOnImg
       );
+
 
       var homeButton = new CircularButton(
         canvas.width / 3 + originalPlayButtonSize / 2,
@@ -1749,17 +1751,16 @@
             ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
             ttsButton.size = soundButtonSize;
           } else if (timerButton.clicked(x, y)) {
-            timeIsPaused = !timeIsPaused;
-            if (timeIsPaused){
-              timer.unpause();
-              statusAnnouncer.textContent = "Timer unpaused";
+            // Toggle timer manually only in pause menu
+            // Timer can't run while in pause menu - only toggle the manual pause flag
+            timerManuallyPaused = !timerManuallyPaused;
 
-              timerButton.image = timerOnImg;
-            } else {
-              timer.pause();
-              statusAnnouncer.textContent = "Timer paused";
-
+            if (timerManuallyPaused){
+              statusAnnouncer.textContent = "Timer will stay paused when game resumes";
               timerButton.image = timerOffImg;
+            } else {
+              statusAnnouncer.textContent = "Timer will resume when game resumes";
+              timerButton.image = timerOnImg;
             }
 
             if (!muted) {
@@ -1972,7 +1973,13 @@
                 buttonSound.play();
               }
 
-              timer.pause();
+              // Save current timer state before pausing
+              if (!timer.isPaused()) {
+                timerManuallyPaused = false; // Timer was running, so auto-pause it
+                timer.pause();
+              } else {
+                timerManuallyPaused = true; // Timer was already manually paused
+              }
               showPauseVolumeControls(true);
               
               // Grid layout: 2 rows x 3 columns with smaller buttons
@@ -2004,6 +2011,8 @@
               timerButton.x = gridStartX + gridSpacing;
               timerButton.y = gridStartY + gridSpacing;
               timerButton.size = pauseButtonSize;
+              // Update timerButton image based on manual pause state
+              timerButton.image = timerManuallyPaused ? timerOffImg : timerOnImg;
 
               //The 3 buttons to decrease, increase and reset the fall speed
               //new row for the fall speed buttons
@@ -2028,7 +2037,10 @@
                 buttonSound.play();
               }
 
-              timer.unpause();
+              // Only unpause timer if it wasn't manually paused by the user
+              if (!timerManuallyPaused) {
+                timer.unpause();
+              }
               showPauseVolumeControls(false);
 
               pauseButton.image = pauseButtonImg;
@@ -2042,8 +2054,8 @@
               ttsButton.size = soundButtonSize;
             }
           }
-          //The buttons will be made clickable when timer is paused
-          if(timer.isPaused()){
+          //The buttons will be made clickable when game is paused
+          if(gameIsPaused){
             const minFall = 0.5;
             const maxFall = 8;
             const step = 0.5;
@@ -2113,10 +2125,11 @@
             ttsButton.size = soundButtonSize;
           }
 
-          if (pauseButton.clicked(x, y) && timer.isPaused()) {
+          if (pauseButton.clicked(x, y) && gameIsPaused) {
               gameIsPaused = false;
               menuOP = false;
-              if (!timer.isPaused()){
+              // Only unpause timer if it wasn't manually paused by the user
+              if (!timerManuallyPaused){
                 timer.unpause();
               }
               statusAnnouncer.textContent = "Game resumed";
@@ -2137,20 +2150,17 @@
               ttsButton.size = soundButtonSize;
           }
           
-          if (timerButton.clicked(x, y)) {
-            timeIsPaused = !timeIsPaused;
-            if (timeIsPaused){
-              timer.unpause();
-              statusAnnouncer.textContent = "Timer unpaused";
-                
-              timerButton.image = timerOnImg;
+          if (timerButton.clicked(x, y) && gameIsPaused) {
+            // Toggle timer manually only in pause menu
+            // Timer can't run while game is paused - only toggle the manual pause flag
+            timerManuallyPaused = !timerManuallyPaused;
 
-            } else {
-              timer.pause();
-              statusAnnouncer.textContent = "Timer paused";
-
+            if (timerManuallyPaused){
+              statusAnnouncer.textContent = "Timer will stay paused when game resumes";
               timerButton.image = timerOffImg;
-
+            } else {
+              statusAnnouncer.textContent = "Timer will resume when game resumes";
+              timerButton.image = timerOnImg;
             }
 
             if (!muted) {
@@ -2384,6 +2394,12 @@
         }
 
         // CHECK MUTE BUTTON (visible in all states)
+        timerButton.name = timerManuallyPaused ? "Start Timer Button" : "Stop Timer Button";
+        if (!nowHoveringButton && muteButton.clicked(x, y)) {
+          nowHoveringButton = muteButton;
+        }
+
+        // CHECK MUTE BUTTON (visible in all states)
         muteButton.name = muted ? "Unmute Audio Button" : "Mute Audio Button";
         if (!nowHoveringButton && muteButton.clicked(x, y)) {
           nowHoveringButton = muteButton;
@@ -2443,7 +2459,7 @@
             nowHoveringButton = timerButton;
           }
 
-          if(!nowHoveringButton && timer.isPaused()){
+          if(!nowHoveringButton && gameIsPaused){
             if(decFallButton.clicked(x,y)){
               nowHoveringButton = decFallButton;
             }
@@ -2942,19 +2958,17 @@
       function timerToggleHandler(e) {
         e.preventDefault();
 
-        if (e.key === "p") {
-          pauseMenuOpen = !pauseMenuOpen;
+        if (e.key === "p" && (gameIsPaused || menuOP)) {
+          // Toggle timer manually only when in pause menu
+          // Timer can't run while game is paused - only toggle the manual pause flag
+          timerManuallyPaused = !timerManuallyPaused;
 
-          if (timer.isPaused()){
-            timeIsPaused = false;
-            statusAnnouncer.textContent = "Timer unpaused";
-            timer.unpause();
-            timerButton.image = timerOnImg;
-          }else{
-            timeIsPaused = true;
-            statusAnnouncer.textContent = "Timer paused";
-            timer.pause();
+          if (timerManuallyPaused){
+            statusAnnouncer.textContent = "Timer will stay paused when game resumes";
             timerButton.image = timerOffImg;
+          }else{
+            statusAnnouncer.textContent = "Timer will resume when game resumes";
+            timerButton.image = timerOnImg;
           }
           return false;
         }
@@ -3046,7 +3060,13 @@
             if (!gameIsPaused) {
               gameIsPaused = true;
               menuOP = true;
-              timer.pause();
+              // Save current timer state before pausing
+              if (!timer.isPaused()) {
+                timerManuallyPaused = false; // Timer was running, so auto-pause it
+                timer.pause();
+              } else {
+                timerManuallyPaused = true; // Timer was already manually paused
+              }
               statusAnnouncer.textContent = "Game paused.";
               if (!muted) {
                 buttonSound.load();
@@ -3084,6 +3104,8 @@
               timerButton.x = gridStartX + gridSpacing;
               timerButton.y = gridStartY + gridSpacing;
               timerButton.size = pauseButtonSize;
+              // Update timerButton image based on manual pause state
+              timerButton.image = timerManuallyPaused ? timerOffImg : timerOnImg;
 
               //The 3 buttons to decrease, increase and reset the fall speed
               //new row for the fall speed buttons
@@ -3104,7 +3126,8 @@
             } else {
               gameIsPaused = false;
               menuOP = false;
-              if (!timer.isPaused()){
+              // Only unpause timer if it wasn't manually paused by the user
+              if (!timerManuallyPaused){
                 timer.unpause();
               }
               statusAnnouncer.textContent = "Game resumed";
@@ -3820,27 +3843,27 @@
           timerButton.size,
           timerButton.size
         );
-        
-        if(currentState === state.PLAYSORT && timer.isPaused()){
+
+        if(currentState === state.PLAYSORT && gameIsPaused){
           ctx.drawImage(
-            decFallButton.image, 
-            decFallButton.x, 
-            decFallButton.y, 
-            decFallButton.size, 
+            decFallButton.image,
+            decFallButton.x,
+            decFallButton.y,
+            decFallButton.size,
             decFallButton.size
           );
           ctx.drawImage(
-            incrFallButton.image, 
-            incrFallButton.x, 
-            incrFallButton.y, 
-            incrFallButton.size, 
+            incrFallButton.image,
+            incrFallButton.x,
+            incrFallButton.y,
+            incrFallButton.size,
             incrFallButton.size
           );
           ctx.drawImage(
-            resetFallButton.image, 
-            resetFallButton.x, 
-            resetFallButton.y, 
-            resetFallButton.size, 
+            resetFallButton.image,
+            resetFallButton.x,
+            resetFallButton.y,
+            resetFallButton.size,
             resetFallButton.size
           );
         }
