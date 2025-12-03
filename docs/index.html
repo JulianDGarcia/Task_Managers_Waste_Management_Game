@@ -147,7 +147,6 @@
       document.addEventListener("keyup", toggleTTSHandler, false);
       document.addEventListener("keyup", actPauseMenu, false);
       document.addEventListener("keyup", pauseMenuHandler, false);
-      //document.addEventListener("keyup", toggleLabelsHandler, false);
       document.addEventListener("keyup", timerToggleHandler, false);
 
       (function(){
@@ -332,7 +331,6 @@
 
       var muted = false;
       var ttsEnabled = true;
-      //var labelsEnabled = true;
 
       var loadingImg = image("Images/Screens/loadScreen.png");
       var mainIntroImg = new Image();
@@ -348,36 +346,22 @@
       var pauseScreenImgLabeled = new Image();
 
       var timerOffImg = new Image();
-      //var timerOffImgLabeled = new Image();
       var timerOnImg = new Image();
-      //var timerOnImgLabeled = new Image();
       var muteImg = new Image();
       var unmuteImg = new Image();
-      //var muteImgLabeled = new Image();
-      //var unmuteImgLabeled = new Image();
       var ttsOnImg = new Image();
-      //var ttsOnImgLabeled = new Image();
       var ttsOffImg = new Image();
-      //var ttsOffImgLabeled = new Image();
       var pauseButtonImg = new Image();
-      //var pauseButtonImgLabeled = new Image();
       var playButtonImg = new Image();
-      //var playButtonImgLabeled = new Image();
       var level1Img = new Image();
       var level2Img = new Image();
       var level3Img = new Image();
       var restartButtonImg = new Image();
-      //var restartButtonImgLabeled = new Image();
       var homeButtonImg = new Image();
-      //var homeButtonImgLabeled = new Image();
-      //var labelsButtonImg = new Image();
-      //var labelsButtonOffImg = new Image();
       var resumePauseImg = new Image();
       var decFallSpeedImg = new Image();
       var incrFallSpeedImg = new Image();
       var resetFallSpeedImg = new Image();
-
-      //var resumePauseImgLabeled = new Image();
 
       var bananaMatchImg = new Image();
       var bottleMatchImg = new Image();
@@ -482,32 +466,20 @@
         pauseScreenImgLabeled.onload = finishedLoading;
 
         timerOffImg.onload = finishedLoading;
-        //timerOffImgLabeled.onload = finishedLoading;
         timerOnImg.onload = finishedLoading;
-        //timerOnImgLabeled.onload = finishedLoading;
         muteImg.onload = finishedLoading;
         unmuteImg.onload = finishedLoading;
-        //muteImgLabeled.onload = finishedLoading;
-        //unmuteImgLabeled.onload = finishedLoading;
         ttsOnImg.onload = finishedLoading;
-        //ttsOnImgLabeled.onload = finishedLoading;
         ttsOffImg.onload = finishedLoading;
-        //ttsOffImgLabeled.onload = finishedLoading;
         pauseButtonImg.onload = finishedLoading;
-        //pauseButtonImgLabeled.onload = finishedLoading;
         playButtonImg.onload = finishedLoading;
-        //playButtonImgLabeled.onload = finishedLoading;
         level1Img.onload = finishedLoading;
         level2Img.onload = finishedLoading;
         level3Img.onload = finishedLoading;
         restartButtonImg.onload = finishedLoading;
-        //restartButtonImgLabeled.onload = finishedLoading;
         homeButtonImg.onload = finishedLoading;
         homeButtonImg.onload = finishedLoading;
-        //labelsButtonImg.onload = finishedLoading;
-        //labelsButtonOffImg.onload = finishedLoading;
         resumePauseImg.onload = finishedLoading;
-        //resumePauseImgLabeled.onload = finishedLoading;
 
         bananaMatchImg.onload = finishedLoading;
         bottleMatchImg.onload = finishedLoading;
@@ -607,35 +579,22 @@
         pauseScreenImgLabeled.src = "Images/Screens/settingsScreenGameplay.png";
 
         timerOffImg.src = "Images/Buttons/TimerButtonOff_Updated.png";
-        //timerOffImgLabeled.src = "Images/Buttons/TimerButtonOff_Updated.png";
         timerOnImg.src = "Images/Buttons/TimerButton_Updated.png";
-        //timerOnImgLabeled.src = "Images/Buttons/TimerButton_Updated.png";
         muteImg.src = "Images/Buttons/muteButton_Updated.png";
         unmuteImg.src = "Images/Buttons/unmuteButton_Updated.png";
-        //muteImgLabeled.src = "Images/Buttons/muteButton_Updated.png";
-        //unmuteImgLabeled.src = "Images/Buttons/unmuteButton_Updated.png";
         ttsOnImg.src = "Images/Buttons/disableTextToSpeechButton.png";
-        //ttsOnImgLabeled.src = "Images/Buttons/disableTextToSpeechButton.png";
         ttsOffImg.src = "Images/Buttons/enableTextToSpeechButton.png";
-        //ttsOffImgLabeled.src = "Images/Buttons/enableTextToSpeechButton.png";
         pauseButtonImg.src = "Images/Buttons/SettingsButton_Updated.png";
-        //pauseButtonImgLabeled.src = "Images/Buttons/pauseButton_Updated.png";
         playButtonImg.src = "Images/Buttons/playButton_Updated.png";
-        //playButtonImgLabeled.src = "Images/Buttons/playButton_Updated.png";
         level1Img.src = "Images/Buttons/level1.png";
         level2Img.src = "Images/Buttons/level2.png";
         level3Img.src = "Images/Buttons/level3.png";
         restartButtonImg.src = "Images/Buttons/restartButton_Updated.png";
-        //restartButtonImgLabeled.src = "Images/Buttons/restartButton_Updated.png";
         homeButtonImg.src = "Images/Buttons/homeButton_Updated.png";
-        //homeButtonImgLabeled.src = "Images/Buttons/homeButton_Updated.png";
-        //labelsButtonImg.src = "Images/Buttons/labelButtonOn.png";
-        //labelsButtonOffImg.src = "Images/Buttons/labelButtonOff.png";
         decFallSpeedImg.src = "Images/Buttons/DecFallSpeedImg.png";
         incrFallSpeedImg.src = "Images/Buttons/IncrFallSpeedImg.png";
         resetFallSpeedImg.src = "Images/Buttons/resetFallSpeedImg.png";
         resumePauseImg.src = "Images/Buttons/pauseResumeButton_Updated.png";
-        //resumePauseImgLabeled.src = "Images/Buttons/pauseResumeButton_Updated.png";
 
         bananaMatchImg.src = "Images/Clear/bananaPeelClr.png";
         bottleMatchImg.src = "Images/Clear/bottleClr.png";
@@ -867,13 +826,6 @@
         soundButtonSize,
         ttsOnImg
       );
-
-      /* var labelsButton = new CircularButton(
-        canvas.width - soundButtonSize - soundButtonSize / 8,
-        soundButtonSize / 8,
-        soundButtonSize,
-        labelsButtonImg
-      ); */
 
       decFallButton = new CircularButton(0,0,70, decFallSpeedImg);
       decFallButton.name = "Decrease Fall Speed Button";
@@ -1689,18 +1641,6 @@
             pauseButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
             pauseButton.y = soundButtonSize / 8;
             pauseButton.size = soundButtonSize;
-            /* 
-
-            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            muteButton.y = soundButtonSize / 8;
-            muteButton.size = soundButtonSize;
-            
-            // Reset TTS button to original position (not visible during active gameplay)
-            ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
-            ttsButton.size = soundButtonSize; 
-            
-            */
 
           } else if (restartButton.clicked(x, y)) {
             statusAnnouncer.textContent = "Level choosing screen.";
@@ -1727,18 +1667,6 @@
             pauseButton.y = soundButtonSize / 8;
             pauseButton.size = soundButtonSize;
 
-            /*
-            
-            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            muteButton.y = soundButtonSize / 8;
-            muteButton.size = soundButtonSize;
-
-            // Reset TTS button to original position
-            ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
-            ttsButton.size = soundButtonSize;
-
-            */
 
           } else if (homeButton.clicked(x, y)) {
             statusAnnouncer.textContent = "Returning to main screen.";
@@ -1759,24 +1687,11 @@
             playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
             playButton.size = originalPlayButtonSize;
             currentPlayButtonSize = originalPlayButtonSize;
-            //increasePlayButtonSize = true;
 
             pauseButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
             pauseButton.y = soundButtonSize / 8;
             pauseButton.size = soundButtonSize;            
 
-            /* 
-            
-            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            muteButton.y = soundButtonSize / 8;
-            muteButton.size = soundButtonSize;
-
-            // Reset TTS button to original position
-            ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
-            ttsButton.size = soundButtonSize; 
-            
-            */
 
           } else if (timerButton.clicked(x, y)) {
             // Toggle timer manually only in pause menu
@@ -1809,7 +1724,6 @@
             currentState = state.WELCOME1;
             playButton.size = originalPlayButtonSize;
             currentPlayButtonSize = originalPlayButtonSize;
-            //increasePlayButtonSize = true;
           }
           toggleAudio(x, y); 
 
@@ -1823,7 +1737,6 @@
             currentState = state.WELCOME2;
             playButton.size = originalPlayButtonSize;
             currentPlayButtonSize = originalPlayButtonSize;
-            //increasePlayButtonSize = true;
           }
           toggleAudio(x, y);
 
@@ -1840,7 +1753,6 @@
             playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
             playButton.size = originalPlayButtonSize;
             currentPlayButtonSize = originalPlayButtonSize;
-            //increasePlayButtonSize = true;
           }
           toggleAudio(x, y);
           
@@ -1858,7 +1770,6 @@
             playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
             playButton.size = originalPlayButtonSize;
             currentPlayButtonSize = originalPlayButtonSize;
-            //increasePlayButtonSize = true;
           }
 
           toggleAudio(x, y);
@@ -1876,7 +1787,6 @@
             playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
             playButton.size = originalPlayButtonSize;
             currentPlayButtonSize = originalPlayButtonSize;
-            //increasePlayButtonSize = true;
           }
           
           toggleAudio(x, y);
@@ -1893,7 +1803,6 @@
             playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
             playButton.size = originalPlayButtonSize;
             currentPlayButtonSize = originalPlayButtonSize;
-            //increasePlayButtonSize = true;
           }
 
           toggleAudio(x, y);
@@ -2075,13 +1984,6 @@
               pauseButton.x = sidebarLocalXOrigin + binWidth * (1 / 8);
               pauseButton.y = canvas.height * (7 / 16);
               pauseButton.size = sortButtonSize;
-
-              // Reset TTS button to original position (not visible during active gameplay)
-              /*
-              ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-              ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
-              ttsButton.size = soundButtonSize;
-              */
             }
           }
           //The buttons will be made clickable when game is paused
@@ -2148,19 +2050,6 @@
             pauseButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
             pauseButton.y = soundButtonSize / 8;
             pauseButton.size = soundButtonSize;            
-
-            /*
-
-            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            muteButton.y = soundButtonSize / 8;
-            muteButton.size = soundButtonSize;
-
-            // Reset TTS button to original position
-            ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
-            ttsButton.size = soundButtonSize;
-
-            */
           }
 
           if (pauseButton.clicked(x, y) && gameIsPaused) {
@@ -2227,7 +2116,6 @@
             playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
             playButton.size = originalPlayButtonSize;
             currentPlayButtonSize = originalPlayButtonSize;
-            //increasePlayButtonSize = true;
 
             homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
             homeButton.y =
@@ -2243,20 +2131,7 @@
 
             pauseButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
             pauseButton.y = soundButtonSize / 8;
-            pauseButton.size = soundButtonSize;            
-
-            /*
-
-            muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            muteButton.y = soundButtonSize / 8;
-            muteButton.size = soundButtonSize;
-
-            // Reset TTS button to original position
-            ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-            ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
-            ttsButton.size = soundButtonSize;
-            */
-
+            pauseButton.size = soundButtonSize;
           }
         } else if (currentState == state.END) {
           statusAnnouncer.textContent = "Ending game.";
@@ -2286,7 +2161,6 @@
             pauseButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
             pauseButton.y = soundButtonSize / 8;
             pauseButton.size = soundButtonSize; 
-            //increasePlayButtonSize = true;
           }
 
           toggleAudio(x, y);
@@ -2987,7 +2861,7 @@
 
       function toggleTTSHandler(e) {
         // Allow TTS toggle on all screens except during active gameplay (not paused)
-        if(e.key === "t" && (currentState !== state.PLAYSORT || timer.isPaused())) {
+        if(e.key === "t" && (currentState !== state.PLAYSORT || gameIsPaused)) {
           e.preventDefault();
           if (ttsEnabled) {
             statusAnnouncer.textContent = "Text-to-speech disabled.";
@@ -3022,62 +2896,6 @@
           return false;
         }
       }
-
-      /* function toggleLabelsHandler(e) {
-        if (e.key === "l") {
-
-          e.preventDefault();
-
-          if (labelsEnabled == true) {
-            statusAnnouncer.textContent = "Labels disabled.";
-
-            labelsButton.image = labelsButtonOffImg;
-            playButton.image = playButtonImg;
-
-            if (!muted)  { muteButton.image = muteImg; }
-            else if (muted) { muteButton.image = unmuteImg; }
-
-            if(!timeIsPaused) {timerButton.image = timerOnImg; }
-            else if (timeIsPaused) {timerButton.image = timerOffImg; }
-
-            if (!ttsEnabled) { ttsButton.image = ttsOffImg; }
-            else if (ttsEnabled) { ttsButton.image = ttsOnImg; }
-
-
-            homeButton.image = homeButtonImg;
-            restartButton.image = restartButtonImg;
-
-            if(menuOP) { pauseButton.image = resumePauseImg; }
-            else { pauseButton.image = pauseButtonImg;}
-
-            labelsEnabled = false;
-
-          } else if (labelsEnabled == false) {
-            statusAnnouncer.textContent = "Labels enabled.";
-
-            labelsButton.image = labelsButtonImg;
-            playButton.image = playButtonImgLabeled;
-
-            if (!muted)  { muteButton.image = muteImgLabeled; }
-            else if (muted) { muteButton.image = unmuteImgLabeled; }
-
-            if (!timeIsPaused) {timerButton.image = timerOnImgLabeled; }
-            else if (timeIsPaused) {timerButton.image = timerOffImgLabeled; }
-
-            if (!ttsEnabled) { ttsButton.image = ttsOffImgLabeled; }
-            else if (ttsEnabled) { ttsButton.image = ttsOnImgLabeled; }
-
-            homeButton.image = homeButtonImgLabeled;
-            restartButton.image = restartButtonImgLabeled;
-
-            if(menuOP) { pauseButton.image = resumePauseImgLabeled; }
-            else { pauseButton.image = pauseButtonImgLabeled;}
-
-            labelsEnabled = true;
-
-          }
-        }
-      } */
 
       function showPauseVolumeControls(show){
         var el = document.getElementById('pauseVolume');
@@ -3239,19 +3057,6 @@
               pauseButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
               pauseButton.y = soundButtonSize / 8;
               pauseButton.size = soundButtonSize;
-
-              /*
-
-              muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-              muteButton.y = soundButtonSize / 8;
-              muteButton.size = soundButtonSize;
-
-              // Reset TTS button to original position
-              ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-              ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
-              ttsButton.size = soundButtonSize;
-
-              */
             }
           }
         }
@@ -3260,9 +3065,13 @@
       function pauseMenuHandler(e) {
         if (e.key === "r" && menuOP == true){
           e.preventDefault();
+          if(currentState == state.PLAYSORT) {
+            gameisPaused = false;
+          }
+          menuOP = false; 
+          showPauseVolumeControls(false);
+
           statusAnnouncer.textContent = "Restarting game. Level choosing screen.";
-          menuOP = false;
-          gameIsPaused = false;
           if (!muted) {
             buttonSound.load();
             buttonSound.play();
@@ -3273,6 +3082,13 @@
           }
 
           currentState = state.SORTLEVEL;
+
+          level1Button.x = canvas.width / 8;
+          level1Button.y = canvas.height / 2 - levelButtonHeight / 2;
+          level2Button.x = canvas.width / 8 + levelButtonWidth * (3 / 2);
+          level2Button.y = canvas.height / 2 - levelButtonHeight / 2;
+          level3Button.x = canvas.width / 8 + levelButtonWidth * 3;
+          level3Button.y = canvas.height / 2 - levelButtonHeight / 2;
 
           homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
           homeButton.y =
@@ -3289,17 +3105,7 @@
           pauseButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
           pauseButton.y = soundButtonSize / 8;
           pauseButton.size = soundButtonSize;  
-          /*
-          muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-          muteButton.y = soundButtonSize / 8;
-          muteButton.size = soundButtonSize;
 
-          // Reset TTS button to original position
-          ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-          ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
-          ttsButton.size = soundButtonSize;
-          */
-          
         } else if (e.key === "h" && menuOP == true){
           if (currentState == state.PLAYSORT) {
             gameIsPaused = false;
@@ -3323,7 +3129,6 @@
           playButton.y = canvas.height / 2 - originalPlayButtonSize / 4;
           playButton.size = originalPlayButtonSize;
           currentPlayButtonSize = originalPlayButtonSize;
-          increasePlayButtonSize = true;
 
           homeButton.x = canvas.width / 3 + originalPlayButtonSize / 2;
           homeButton.y = canvas.height / 2 + canvas.height / 4 - originalPlayButtonSize / 2;
@@ -3335,16 +3140,6 @@
           pauseButton.y = soundButtonSize / 8;
           pauseButton.size = soundButtonSize;         
 
-          /*
-          muteButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-          muteButton.y = soundButtonSize / 8;
-          muteButton.size = soundButtonSize;
-
-          // Reset TTS button to original position
-          ttsButton.x = canvas.width - soundButtonSize - soundButtonSize / 8;
-          ttsButton.y = soundButtonSize / 8 + soundButtonSize + 10;
-          ttsButton.size = soundButtonSize;
-          */
         } else if (e.key === "h" && currentState == state.END) {
           gameIsPaused = false;
           menuOP = false;
@@ -3637,22 +3432,6 @@
           pauseButton.size,
           pauseButton.size
         );
-        /*        
-        ctx.drawImage(
-          muteButton.image,
-          muteButton.x,
-          muteButton.y,
-          muteButton.size,
-          muteButton.size
-        );
-        ctx.drawImage(
-          ttsButton.image,
-          ttsButton.x,
-          ttsButton.y,
-          ttsButton.size,
-          ttsButton.size
-        );
-        */
       }
 
       function drawWelcome1Screen() {
@@ -3671,22 +3450,6 @@
           pauseButton.size,
           pauseButton.size
         );        
-        /*
-        ctx.drawImage(
-          muteButton.image,
-          muteButton.x,
-          muteButton.y,
-          muteButton.size,
-          muteButton.size
-        );
-        ctx.drawImage(
-          ttsButton.image,
-          ttsButton.x,
-          ttsButton.y,
-          ttsButton.size,
-          ttsButton.size
-        );
-        */
       }
 
       function drawWelcome2Screen() {
@@ -3705,22 +3468,6 @@
           pauseButton.size,
           pauseButton.size
         );
-        /*
-        ctx.drawImage(
-          muteButton.image,
-          muteButton.x,
-          muteButton.y,
-          muteButton.size,
-          muteButton.size
-        );
-        ctx.drawImage(
-          ttsButton.image,
-          ttsButton.x,
-          ttsButton.y,
-          ttsButton.size,
-          ttsButton.size
-        );
-        */
       }
 
       function drawtutorial_introScreen(){
@@ -3739,22 +3486,6 @@
           pauseButton.size,
           pauseButton.size
         );
-        /*
-        ctx.drawImage(
-          muteButton.image,
-          muteButton.x,
-          muteButton.y,
-          muteButton.size,
-          muteButton.size
-        );
-        ctx.drawImage(
-          ttsButton.image,
-          ttsButton.x,
-          ttsButton.y,
-          ttsButton.size,
-          ttsButton.size
-        );
-        */
       }
 
       function drawtutorialScreen(){
@@ -3773,22 +3504,6 @@
           pauseButton.size,
           pauseButton.size
         );
-        /*
-        ctx.drawImage(
-          muteButton.image,
-          muteButton.x,
-          muteButton.y,
-          muteButton.size,
-          muteButton.size
-        );
-        ctx.drawImage(
-          ttsButton.image,
-          ttsButton.x,
-          ttsButton.y,
-          ttsButton.size,
-          ttsButton.size
-        );
-        */
       }
 
       function drawSortingChooseLevelScreen() {
@@ -3821,22 +3536,6 @@
           pauseButton.size,
           pauseButton.size
         );
-        /*
-        ctx.drawImage(
-          muteButton.image,
-          muteButton.x,
-          muteButton.y,
-          muteButton.size,
-          muteButton.size
-        );
-        ctx.drawImage(
-          ttsButton.image,
-          ttsButton.x,
-          ttsButton.y,
-          ttsButton.size,
-          ttsButton.size
-        );
-        */
       }
 
       function drawSortingIntro1() {
@@ -3855,22 +3554,6 @@
           pauseButton.size,
           pauseButton.size
         );
-        /*
-        ctx.drawImage(
-          muteButton.image,
-          muteButton.x,
-          muteButton.y,
-          muteButton.size,
-          muteButton.size
-        );
-        ctx.drawImage(
-          ttsButton.image,
-          ttsButton.x,
-          ttsButton.y,
-          ttsButton.size,
-          ttsButton.size
-        );
-        */
       }
 
       function drawSortingIntro2() {
@@ -3889,22 +3572,6 @@
           pauseButton.size,
           pauseButton.size
         );
-        /*
-        ctx.drawImage(
-          muteButton.image,
-          muteButton.x,
-          muteButton.y,
-          muteButton.size,
-          muteButton.size
-        );
-        ctx.drawImage(
-          ttsButton.image,
-          ttsButton.x,
-          ttsButton.y,
-          ttsButton.size,
-          ttsButton.size
-        );
-        */
       }
 
       function drawEndGameScreen() {
@@ -3937,22 +3604,6 @@
           homeButton.size,
           homeButton.size
         );
-        /*
-        ctx.drawImage(
-          muteButton.image,
-          muteButton.x,
-          muteButton.y,
-          muteButton.size,
-          muteButton.size
-        );
-        ctx.drawImage(
-          ttsButton.image,
-          ttsButton.x,
-          ttsButton.y,
-          ttsButton.size,
-          ttsButton.size
-        );
-        */
       }
 
       function drawPauseButton() {
@@ -4005,8 +3656,7 @@
         } else if (currentState == state.PLAYSORT) {
           ctx.drawImage(pauseScreenImgLabeled, 0, 0, canvas.width, canvas.height);
         }
-        //ctx.drawImage(pauseScreenImgLabeled, 0, 0, canvas.width, canvas.height);
-
+        
         // Draw buttons in 2x3 grid layout
         // Row 1: Resume, Restart, Home
         ctx.drawImage(
@@ -4077,7 +3727,7 @@
             resetFallButton.size
           );
         }
-        }
+      }
 
       function drawSortingGame() {
         ctx.drawImage(sortingBackgroundImg, 0, 0, canvas.width, canvas.height);
@@ -4438,7 +4088,6 @@
             drawPauseScreen();
           }
 
-          //changePlayButtonSize();
         } else if (currentState == state.WELCOME1) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -4447,7 +4096,6 @@
             drawPauseScreen();
           }
 
-          //changePlayButtonSize();
         } else if (currentState == state.WELCOME2) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -4456,7 +4104,6 @@
             drawPauseScreen();
           }
 
-          //changePlayButtonSize();
         } else if (currentState == state.SORTINTRO1) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -4465,7 +4112,6 @@
             drawPauseScreen();
           }
 
-          //changePlayButtonSize();
         } else if (currentState == state.SORTINTRO2) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -4474,7 +4120,6 @@
             drawPauseScreen();
           }
 
-          //changePlayButtonSize();
         } else if (currentState == state.TUT_INTRO){
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -4483,7 +4128,6 @@
             drawPauseScreen();
           }
 
-          //changePlayButtonSize();
         } else if (currentState == state.TUTORIAL){
            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -4492,7 +4136,6 @@
             drawPauseScreen();
           }
 
-          //changePlayButtonSize();         
         } else if (currentState == state.SORTLEVEL) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -4501,7 +4144,6 @@
             drawPauseScreen();
           }
 
-          //changeLevelButtonSize();
         } else if (currentState == state.PLAYSORT) {
           timer.update();
 
@@ -4680,7 +4322,6 @@
 
           drawEndGameScreen();
 
-          //changeRestartAndHomeButtonSize();
         }
 
         requestAnimationFrame(draw);
